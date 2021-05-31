@@ -1,8 +1,16 @@
 import React from 'react';
-import Header from '../components/Header/Header' 
+import Carousel from '../components/home/carousel'
+import Banners from '../components/home/banners_grid'
+import Trending from '../components/home/trending'
 
 const Home = () => {
-  return <Header />
+  return (
+    <>
+      <Carousel />
+      <Banners />
+      <Trending />
+    </>
+  )  
 }
 
 export default Home;

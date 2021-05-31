@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import './styles/css/bootstrap.custom.min.css';
+import './styles/css/bootstrap.css';
 import './styles/App.scss';
 // import $ from 'jquery';
 // import './js_inj/common_scripts'
@@ -23,17 +23,30 @@ import './styles/App.scss';
 // import './js/lazyload'
 
 import Home from './pages/home'
+import Header from './components/Header/Header'
+import Footer from './components/Footer/footer'
 
 function App() {
-  // const scripts = [
-
-  // ]
-  // useEffect( () => {
-    
-  // }, [] )
+  const scripts = [
+    "/js/main.js",
+    "/js/carousel-home.js",
+    "/js/test.js",
+  ]
+  useEffect( () => {
+    Promise.all(scripts.map( async script => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const script_elem = document.createElement('script');
+      script_elem.src = script;
+      // script_elem.async = true;
+      document.body.appendChild(script_elem); 
+    } ))
+  }, [] )
   return (
     <div className="App">
+      <Header />
       <Home />
+      <Footer />
+	    <div id="toTop"></div>  
     </div>
   );
 }

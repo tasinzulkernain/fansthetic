@@ -1,7 +1,10 @@
 (function ($) {
 
 	"use strict";
-		
+	
+	console.log("window");
+	console.log($(window).width());
+
 	// Sticky nav
 	var $headerStick = $('.Sticky');
 	$(window).on("scroll", function () {
@@ -270,18 +273,18 @@
           $headingFooter.removeAttr("data-toggle","collapse");
         }
     }).resize();
-	$headingFooter.on("click", function () {
-		$(this).toggleClass('opened');
-	});
+	// $headingFooter.on("click", function () {
+	// 	$(this).toggleClass('opened');
+	// });
 	
 	/* Footer reveal */
-	if ($(window).width() >= 1024) {
-		$('footer.revealed').footerReveal({
-		shadow: false,
-		opacity:0.6,
-		zIndex: 1
-	});
-	};
+	// if ($(window).width() >= 1024) {
+	// 	$('footer.revealed').footerReveal({
+	// 		shadow: false,
+	// 		opacity:0.6,
+	// 		zIndex: 1
+	// 	});
+	// };
 
 	// Scroll to top
 	var pxShow = 800; // height on which the button will show
