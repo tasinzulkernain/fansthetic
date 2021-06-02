@@ -4467,6 +4467,8 @@ body.modal-open .mm-slideout {
 	text-align: center;
 	position: relative;
 	cursor: pointer;
+  display: block;
+
 	&:hover {
 		ul li {
 			display: block;
@@ -4474,6 +4476,14 @@ body.modal-open .mm-slideout {
 	}
 
 	figure {
+    border-radius: .5em;
+    height: 20rem;
+    // border: 1px solid black;
+    background-color: #ddd;
+    // width: 22rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 		position: relative;
 		overflow: hidden;
 		@include transition-default (all,0.7s, ease);

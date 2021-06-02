@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../img/logo.svg';
-import axios from 'axios';
-import {axiosConfig} from '../../config'
+import api from '../../api'
 
 const cacheCats = [
 	{
@@ -66,12 +65,12 @@ const cacheCats = [
 	}
   ] 
 
-const Header = () => {
+const Header = props => {
 	const [categories, update_categories] = useState(cacheCats);
 	// useEffect(() => {
 	// 	window.axios = axios;
 	// 	window.axiosConfig = axiosConfig;
-	// 	axios({url: '/products/category/', ...axiosConfig})
+	// 	api({url: '/products/category/'})
 	// 	.then(d => {
 	// 		console.log(d.data.response.categories)
 	// 		update_categories(d.data.response.categories)

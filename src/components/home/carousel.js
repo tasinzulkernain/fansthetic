@@ -1,13 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios';
-import { axiosConfig } from '../../config'
+import api from '../../api'
 
 const Carousel = props => {
     const [banners, update_banners] = useState([1,2,3]);
 	useEffect(() => {
-		window.axios = axios;
-		window.axiosConfig = axiosConfig;
-		axios({url: '/banners/', ...axiosConfig})
+		api({url: '/banners/'})
 		.then(d => {
 			console.log(d.data.response.banners)
 			update_banners(d.data.response.banners)

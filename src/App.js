@@ -1,28 +1,12 @@
 import React, {useEffect} from 'react';
 import './styles/css/bootstrap.css';
 import './styles/App.scss';
-// import $ from 'jquery';
-// import './js_inj/common_scripts'
-// import './js/main'
-// import './js/jquery.nice-select'
-// import './js/jquery.mmenu.all'
-// import './js/jquery.magnific-popup'
-// import './js/carousel-home'
-// import './js/jquery.cookiebar'
-// import './js/footer-reveal'
-// import './js/carousel_with_thumbs'
-// import './js/carousel-home-2'
-// import './js/bootstrap.bundle'
-// import './js/ResizeSensor'
-// import './js/wow'
-// import './js/video_header'
-// import './js/theia-sticky-sidebar'
-// import './js/specific_listing'
-// import './js/owl.carousel'
-// import './js/modernizr'
-// import './js/lazyload'
+import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import store from './state/store'
 
 import Home from './pages/home'
+import Products from './pages/products'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/footer'
 
@@ -30,7 +14,7 @@ function App() {
   const scripts = [
     "/js/main.js",
     "/js/carousel-home.js",
-    "/js/test.js",
+    "/js/test.js",  
   ]
   useEffect( () => {
     Promise.all(scripts.map( async script => {
@@ -43,10 +27,23 @@ function App() {
   }, [] )
   return (
     <div className="App">
-      <Header />
-      <Home />
-      <Footer />
-	    <div id="toTop"></div>  
+      <Provider store={store} >
+      <BrowserRouter
+
+      >
+        <Header />
+        <Switch>
+          <Route path="/" exact>
+            <Home />
+          </Route>
+          <Route path="/products">
+            <Products />
+          </Route>
+        </Switch>
+        <Footer />
+        <div id="toTop"></div>  
+      </ BrowserRouter>
+      </Provider>
     </div>
   );
 }
