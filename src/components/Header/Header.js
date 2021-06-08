@@ -1,83 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../img/logo.svg';
-import api from '../../api'
+import { update_cart } from '../../state/slices/cart/cart_slice'
+import { set_categories } from '../../state/slices/statics/statics_slice'
+import { load_scripts } from '../../state/slices/pages/pages_slice'
+import { connect } from 'react-redux'
 
-const cacheCats = [
-	{
-	  "id": 2,
-	  "title": "Aesthetic",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/2.jpeg",
-	  "image_alt": "The beauty of some are beyond description"
-	},
-	{
-	  "id": 3,
-	  "title": "Anime",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/3.jpeg",
-	  "image_alt": "Dedicated to those wanting to escape reality"
-	},
-	{
-	  "id": 4,
-	  "title": "Harry Potter",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/4.jpeg",
-	  "image_alt": "Always."
-	},
-	{
-	  "id": 5,
-	  "title": "Diecast",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/5.jpeg",
-	  "image_alt": "For your miniature garage"
-	},
-	{
-	  "id": 6,
-	  "title": "Games",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/6.jpeg",
-	  "image_alt": "Gaming merchandise"
-	},
-	{
-	  "id": 7,
-	  "title": "Marvel and DC",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/7.jpeg",
-	  "image_alt": "Marvel and DC merch"
-	},
-	{
-	  "id": 8,
-	  "title": "Movies",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/8.jpeg",
-	  "image_alt": "Movie merch"
-	},
-	{
-	  "id": 9,
-	  "title": "Music",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/9.jpeg",
-	  "image_alt": "Music merch"
-	},
-	{
-	  "id": 10,
-	  "title": "TV Shows",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/10.jpeg",
-	  "image_alt": "tv show merchandise"
-	},
-	{
-	  "id": 11,
-	  "title": "Van Gough Collections",
-	  "thumbnail": "https://fansthetic.b-cdn.net/media/categories/11.jpeg",
-	  "image_alt": "Van gough art based merch"
+
+const mapStateToProps = state => {
+	return {
+		cart: state.cart,
+		categories: state.statics.categories
 	}
-  ] 
+}
+
+const mapDispatchToProps = dispatch => {
+	return {
+		load_scripts: (page, comp) => dispatch( load_scripts(page,comp) ),
+		update_cart: cart => dispatch( update_cart(cart) ), 
+		set_categories: () => dispatch( set_categories() )
+	}
+}
 
 const Header = props => {
-	const [categories, update_categories] = useState(cacheCats);
-	// useEffect(() => {
-	// 	window.axios = axios;
-	// 	window.axiosConfig = axiosConfig;
-	// 	api({url: '/products/category/'})
-	// 	.then(d => {
-	// 		console.log(d.data.response.categories)
-	// 		update_categories(d.data.response.categories)
-	// 	}).catch(err => {
-	// 		console.log(err);
-	// 	})
-	// }, []);
+
+	const { cart, categories, set_categories, load_scripts, update_cart } = props;
+
+	useEffect(() => {
+		set_categories();
+		load_scripts("header", "default");
+	}, []);
+
+	window.sc = set_categories;
+
+	useEffect(() => {
+		if(!categories.loading) {
+			load_scripts("header", "default");
+		}
+	}, [categories])
+
 	return (
 	<header className="version_1">
       	<div className="gg" />
@@ -148,7 +108,7 @@ const Header = props => {
 									</span>
 									<div id="menu">
 										<ul>
-											{categories.length && categories.map( cat => 
+											{!categories.loading && categories.list.map( cat => 
 												<li className="w-100 ">
 													<div className="d-flex w-100 p-2">
 														<img className="border rounded" src={cat.thumbnail} width="50" height="50"/>
@@ -253,4 +213,4 @@ const Header = props => {
   );
 }
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

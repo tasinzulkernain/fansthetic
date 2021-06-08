@@ -6,10 +6,11 @@ import reduceReducers from 'reduce-reducers';
 
 
 const initialState = {
-    "home": {
-        loading: true,
+    "header": {
         loaded_scripts: [],
-        components_loading: {}
+    },
+    "home": {
+        loaded_scripts: [],
     },
     "products": {
         loaded_scripts: [],
@@ -22,10 +23,7 @@ const pages_slice = createSlice({
     initialState,
     reducers: {
         load_scripts: scripts_reducer,
-        // update_loading: loading_reducer,
-        // products: products_slice.reducer
     },
-    // extraReducers: combineReducers({"products": products_slice.reducer})
 }) 
 
 pages_slice.reducer = reduceReducers(

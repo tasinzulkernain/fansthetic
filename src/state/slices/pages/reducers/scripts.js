@@ -1,4 +1,7 @@
 const scripts = {
+    "header": {
+        "default": ["/js/main.js"],
+    },
     "home": {
         "default": ["/js/main.js"],
         "carousel": ["/js/carousel-home.js"]
@@ -20,7 +23,7 @@ const load_scripts_reducer = (state, action) => {
 
 
 const load_scripts_action = (page, comp) => {
-    return { payload: { page, comp, "gg": "xd" } }
+    return { payload: { page, comp } }
 }
 
 

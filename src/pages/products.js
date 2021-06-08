@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useParams } from 'react';
 import { connect } from 'react-redux'
 import Siderbar from '../components/products/sidebar'
 import List from '../components/products/list'
 // import { update_loading } from '../state/slices/pages/pages_slice'
+import { update_filters, update_products } from '../state/slices/pages/products/products_slice';
+import { update_loading, load_scripts } from '../state/slices/pages/pages_slice'
+import { test_val } from '../state/slices/test/test'
+import qs from 'query-string' 
+import { useLocation } from 'react-router';
 
 const mapStateToProps = state => {
     return {
@@ -12,8 +17,21 @@ const mapStateToProps = state => {
     };
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        test_val: (variable, val) => dispatch(test_val("products.sidebar.".concat(variable), val)),
+        load_scripts: () => dispatch(load_scripts("products", "sidebar")),
+        // update_loading: loading => dispatch(update_loading("products.sidebar", loading)),
+        update_filters: filters => dispatch(update_filters(filters)),
+    }
+}
+
 const Products = props => {
     const { products, loaded_scripts } = props
+
+    const location = useLocation()
+    const qparams = qs.parse(location.search) 
+
     console.log("loading : ", props.state);
     // update_loading(true);
     useEffect( () => {
@@ -30,6 +48,9 @@ const Products = props => {
             }  
         } ))
         
+        if(qparams.category) {
+            update_filters({"categories": [qparams.category]});
+        } 
         
         console.log(loaded_scripts);
     }, [loaded_scripts] )
@@ -41,42 +62,13 @@ const Products = props => {
     return (
         <div className="container margin_30">
             <div className="row">
-                <Siderbar />
+                <Siderbar price />
 	            <div class="col-lg-9">
-                    {/* <div id="stick_here"></div>
-                    <div class="toolbox elemento_stick add_bottom_30">
-                        <div class="container">
-                            <ul class="clearfix">
-                                <li>
-                                    <div class="sort_select">
-                                        <select name="sort" id="sort">
-                                            <option value="popularity" selected="selected">Sort by popularity</option>
-                                            <option value="rating">Sort by average rating</option>
-                                            <option value="date">Sort by newness</option>
-                                            <option value="price">Sort by price: low to high</option>
-                                            <option value="price-desc">Sort by price: high to</option>
-                                        </select>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#0"><i class="ti-view-grid"></i></a>
-                                    <a href="listing-row-1-sidebar-left.html"><i class="ti-view-list"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#0" class="open_filters">
-                                        <i class="ti-filter"></i><span>Filters</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div> */}
                     <List products={products} />
-                    {/* </div> */}
-                    {/* {JSON.stringify(products)} */}
                 </div>
             </div>
         </div>
     )
 }
 
-export default connect(mapStateToProps, dispatch => { return {  }})(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

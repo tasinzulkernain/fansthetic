@@ -121,41 +121,45 @@ const Sidebar = props => {
             <form onSubmit={handleFilterSubmit}>
             <div className="filter_col">
                 <div className="inner_bt"><a href="#" className="open_filters"><i className="ti-close" /></a></div>
-                <div className="filter_type version_2">
-                    <h4><a href="#filter_1" data-toggle="collapse" className="opened">Categories</a></h4>
-                    <div className="collapse show" id="filter_1">
-                        <ul>
-                            {categories.map(cat =>
+                {props.categories ? 
+                    <div className="filter_type version_2">
+                        <h4><a href="#filter_1" data-toggle="collapse" className="opened">Categories</a></h4>
+                        <div className="collapse show" id="filter_1">
+                            <ul>
+                                {categories.map(cat =>
+                                    <li>
+                                        <label className="container_check"> {cat.title} <small>{cat.product_count}</small>
+                                            <input type="checkbox" name={"categories_"+cat.title} />
+                                            <span className="checkmark" />
+                                        </label>
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
+                        {/* /filter_type */}
+                    </div>
+                : <></>}
+                {/* /filter_type */}
+                { props.price ? 
+                    <div className="filter_type version_2">
+                        <h4><a href="#filter_4" data-toggle="collapse" className="closed">Price</a></h4>
+                        <div className="collapse" id="filter_4">
+                            <ul>
                                 <li>
-                                    <label className="container_check"> {cat.title} <small>{cat.product_count}</small>
-                                        <input type="checkbox" name={"categories_"+cat.title} />
-                                        <span className="checkmark" />
+                                    <label className="">
+                                        {/* {'\u09F3'}0 — {'\u09F3'}50<small>11</small> */}
+                                        <div class="input-group mb-3">
+                                            <input name="priceRangeMin" type="number" className="form-control me-3" placeholder="min"/>
+                                            <input name="priceRangeMax" type="number" className="form-control" placeholder="max"/>
+                                            {/* <span className="input-group-text">{'\u09F3'}</span> */}
+                                        </div>
+                                        {/* <span className="checkmark" /> */}
                                     </label>
                                 </li>
-                            )}
-                        </ul>
+                            </ul>
+                        </div>
                     </div>
-                    {/* /filter_type */}
-                </div>
-                {/* /filter_type */}
-                <div className="filter_type version_2">
-                    <h4><a href="#filter_4" data-toggle="collapse" className="closed">Price</a></h4>
-                    <div className="collapse" id="filter_4">
-                        <ul>
-                            <li>
-                                <label className="">
-                                    {/* {'\u09F3'}0 — {'\u09F3'}50<small>11</small> */}
-                                    <div class="input-group mb-3">
-                                        <input name="priceRangeMin" type="number" className="form-control me-3" placeholder="min"/>
-                                        <input name="priceRangeMax" type="number" className="form-control" placeholder="max"/>
-                                        {/* <span className="input-group-text">{'\u09F3'}</span> */}
-                                    </div>
-                                    {/* <span className="checkmark" /> */}
-                                </label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                : <></> }
                 {/* /filter_type */}
 
                 <div className="buttons">

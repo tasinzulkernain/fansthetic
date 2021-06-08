@@ -39,6 +39,9 @@ function App() {
           <Route path="/products">
             <Products />
           </Route>
+          <Route path="/products/:params_category">
+            <Products />
+          </Route>
         </Switch>
         <Footer />
         <div id="toTop"></div>  
