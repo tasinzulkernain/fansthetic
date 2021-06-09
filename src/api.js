@@ -11,8 +11,14 @@ const api = setup({
     // `axios-cache-adapter` options
     cache: {
         maxAge: 15 * 60 * 1000,
-        exclude: { query: false }
+        exclude: { 
+            query: false, 
+            paths: [
+                /\/products\/cart/
+            ],
+        }
     },
+
 })
 
 export default api;

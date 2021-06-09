@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../img/logo.svg';
-import { update_cart } from '../../state/slices/cart/cart_slice'
+import { add_to_cart, initialize_cart, remove_from_cart, update_cart } from '../../state/slices/cart/cart_slice'
 import { set_categories } from '../../state/slices/statics/statics_slice'
 import { load_scripts } from '../../state/slices/pages/pages_slice'
 import { connect } from 'react-redux'
@@ -15,17 +15,21 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
+		initialize_cart: () => dispatch( initialize_cart() ),
 		load_scripts: (page, comp) => dispatch( load_scripts(page,comp) ),
 		update_cart: cart => dispatch( update_cart(cart) ), 
+		add_to_cart: product_id => dispatch( add_to_cart({product_id, quantity: 1}) ),
+		remove_from_cart: product_id => dispatch( remove_from_cart({product_id}) ),
 		set_categories: () => dispatch( set_categories() )
 	}
 }
 
 const Header = props => {
 
-	const { cart, categories, set_categories, load_scripts, update_cart } = props;
+	const { cart, categories, set_categories, load_scripts, add_to_cart, remove_from_cart, initialize_cart } = props;
 
 	useEffect(() => {
+		initialize_cart();
 		set_categories();
 		load_scripts("header", "default");
 	}, []);
@@ -138,10 +142,10 @@ const Header = props => {
 											{cart.products.map( product =>
 												<li>
 													<a href="product-detail-1.html">
-														<figure><img src={product.product__thumbnail} data-src="img/products/shoes/thumb/1.jpg" alt="" width="50" height="50" className="lazy"/></figure>
+														<figure><img src={product.product__thumbnail} data-src={product.product__thumbnail} alt="" width="50" height="50" className="lazy"/></figure>
 														<strong><span>{product.product__title}</span>{product.protuct__price}</strong>
 													</a>
-													<a href="#0" className="action"><i className="ti-trash"></i></a>
+													<a href="#0" onClick={() => remove_from_cart(product.product_id)} className="action"><i className="ti-trash"></i></a>
 												</li>
 											)}
 										</ul>

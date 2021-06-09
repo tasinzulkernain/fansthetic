@@ -7,6 +7,7 @@ import store from './state/store'
 
 import Home from './pages/home'
 import Products from './pages/products'
+import Cart from './pages/cart'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/footer'
 
@@ -41,6 +42,9 @@ function App() {
           </Route>
           <Route path="/products/:params_category">
             <Products />
+          </Route>
+          <Route path="/cart">
+            <Cart />
           </Route>
         </Switch>
         <Footer />

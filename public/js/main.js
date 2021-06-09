@@ -215,6 +215,7 @@
 			}
 		}
 		$button.parent().find("input").val(newVal);
+		$button.parent().find("input")[0].dispatchEvent( new Event('change') );
 	});
 	
 	/* Cart dropdown */
