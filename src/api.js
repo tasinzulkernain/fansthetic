@@ -4,8 +4,8 @@ const api = setup({
     baseURL: "https://fansthetic.com/api/v1/",
     timeout: 10000,
     auth: {
-        username: 'takamura',
-        password: 'ninetail'
+        username: 'hinata',
+        password: 'ilovenaruto'
     },
 
     // `axios-cache-adapter` options

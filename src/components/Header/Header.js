@@ -135,23 +135,18 @@ const Header = props => {
 									<a href="cart.html" className="cart_bt"><strong>2</strong></a>
 									<div className="dropdown-menu">
 										<ul>
-											<li>
-												<a href="product-detail-1.html">
-													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/1.jpg" alt="" width="50" height="50" className="lazy"/></figure>
-													<strong><span>1x Armor Air x Fear</span>$90.00</strong>
-												</a>
-												<a href="#0" className="action"><i className="ti-trash"></i></a>
-											</li>
-											<li>
-												<a href="product-detail-1.html">
-													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/2.jpg" alt="" width="50" height="50" className="lazy"/></figure>
-													<strong><span>1x Armor Okwahn II</span>$110.00</strong>
-												</a>
-												<a href="0" className="action"><i className="ti-trash"></i></a>
-											</li>
+											{cart.products.map( product =>
+												<li>
+													<a href="product-detail-1.html">
+														<figure><img src={product.product__thumbnail} data-src="img/products/shoes/thumb/1.jpg" alt="" width="50" height="50" className="lazy"/></figure>
+														<strong><span>{product.product__title}</span>{product.protuct__price}</strong>
+													</a>
+													<a href="#0" className="action"><i className="ti-trash"></i></a>
+												</li>
+											)}
 										</ul>
 										<div className="total_drop">
-											<div className="clearfix"><strong>Total</strong><span>$200.00</span></div>
+											<div className="clearfix"><strong>Total</strong><span>{cart.total_amount}</span></div>
 											<a href="cart.html" className="btn_1 outline">View Cart</a><a href="checkout.html" className="btn_1">Checkout</a>
 										</div>
 									</div>
