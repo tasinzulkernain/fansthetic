@@ -28,9 +28,10 @@ const cart_slice = createSlice({
         },
         update_cart_success: (state, action) => {
             state.status = "UPDATED"
-            state.count = action.payload.count;
-            state.total_amount = action.payload.total_amount;
-            state.products   = action.payload.products;
+            console.log(action.payload);
+            state.count = parseInt(action.payload.count);
+            state.total_amount = parseInt(action.payload.total_amount);
+            state.products = action.payload.products;
         },
         update_cart_failure: (state, action) => {
             state.status = "FAILED"

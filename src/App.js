@@ -1,58 +1,99 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import './styles/css/bootstrap.css';
 import './styles/App.scss';
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { connect, Provider } from 'react-redux'
 import store from './state/store'
+
+import { script_loaded } from './state/slices/scripts/scripts_slice';
 
 import Home from './pages/home'
 import Products from './pages/products'
+import Product from './pages/product'
 import Cart from './pages/cart'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/footer'
+import Checkout from './pages/checkout';
 
-function App() {
-  const scripts = [
-    "/js/main.js",
-    "/js/carousel-home.js",
-    "/js/test.js",  
-  ]
-  useEffect( () => {
-    Promise.all(scripts.map( async script => {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const script_elem = document.createElement('script');
-      script_elem.src = script;
-      // script_elem.async = true;
-      document.body.appendChild(script_elem); 
-    } ))
-  }, [] )
-  return (
-    <div className="App">
-      <Provider store={store} >
-      <BrowserRouter
-
-      >
-        <Header />
-        <Switch>
-          <Route path="/" exact>
-            <Home />
-          </Route>
-          <Route path="/products">
-            <Products />
-          </Route>
-          <Route path="/products/:params_category">
-            <Products />
-          </Route>
-          <Route path="/cart">
-            <Cart />
-          </Route>
-        </Switch>
-        <Footer />
-        <div id="toTop"></div>  
-      </ BrowserRouter>
-      </Provider>
-    </div>
-  );
+const mapStateToProps = state => {
+    return {
+        to_load_scripts: state.scripts.to_load_scripts,
+        loaded_scripts: state.scripts.loaded_scripts
+    }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+    return {
+        script_loaded: script => dispatch( script_loaded(script) )
+    }
+}
+
+const App = props => {
+    const { to_load_scripts, script_loaded } = props;
+
+    // useEffect(() => {
+    //     Promise.all(loaded_scripts.map(async script => {
+    //         await new Promise(resolve => setTimeout(resolve, 1000));
+    //         const script_elem = document.createElement('script');
+    //         script_elem.src = script;
+    //         // script_elem.async = true;
+    //         document.body.appendChild(script_elem);
+    //     }))
+    // }, [])
+
+    useEffect(() => {
+        Promise.all(to_load_scripts.map(async script_src => {
+            if (document.querySelector(`script[src="${script_src}"]`)) {
+                console.log("Removing ", script_src);
+                document.querySelector(`script[src="${script_src}"]`).remove();
+            }
+            const script_elem = document.createElement('script');
+            script_elem.src = script_src;
+            document.body.appendChild(script_elem);
+            console.log("loaded script ", script_src);
+            script_loaded(script_src);
+        }))
+
+        // document.querySelectorAll('script').forEach( script => {
+        //     if(script.src && !loaded_scripts.find( lscript_src => script.src.search(lscript_src) !== -1 )) {
+        //         console.log("Removing ", script.src);
+        //         script.remove();
+        //     }
+        // } )
+
+    }, [to_load_scripts])
+
+    return (
+        <div className="App">
+            <BrowserRouter
+
+            >
+                <Header />
+                <Switch>
+                    <Route path="/" exact>
+                        <Home />
+                    </Route>
+                    <Route path="/products">
+                        <Products />
+                    </Route>
+                    <Route path="/products/">
+                        <Products />
+                    </Route>
+                    <Route path="/product/">
+                        <Product />
+                    </Route>
+                    <Route path="/cart">
+                        <Cart />
+                    </Route>
+                    <Route path="/checkout">
+                        <Checkout />
+                    </Route>
+                </Switch>
+                <Footer />
+                <div id="toTop"></div>
+            </ BrowserRouter>
+        </div>
+    );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)( App );

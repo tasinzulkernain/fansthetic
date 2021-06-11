@@ -10,11 +10,11 @@ const updateCartItemLogic = createLogic({
     async process({ action }, dispatch) {
         try {
             const d = await api.get('/products/cart')
-            let products = d.data.response.cart.products;
-            products = products.map( product => { return {product_id: product.product_id, quantity: product.quantity} } );
-            const foundProductIndex = products.findIndex( product => product.product_id === action.payload.product_id ); 
-            _.pullAt(products, foundProductIndex);
-            dispatch( update_cart( products.concat( {product_id: action.payload.product_id, quantity: action.payload.quantity} ) ) )
+            dispatch( update_cart( d.data.response.cart.products.map( product => {
+                if(product.product_id === action.payload.product_id) {
+                    return { product_id: product.product_id, quantity: action.payload.quantity }
+                }else return { product_id: product.product_id, quantity: product.quantity }
+            } ) ) )
         }catch (e) {
             dispatch( update_cart_failure({error: e}) )
         }

@@ -19,7 +19,7 @@ const Product = props => {
                 :   <span className={`ribbon hot`}>New</span>
                 }
                 <figure>
-                    <a href="product-detail-1.html">
+                    <a href={`/product/?product_id=${[product.id]}`}>
                         <div className="d-flex flex-column justify-content-center">
                             <img class="img-fluid lazy center-block" src={product.thumbnail} data-src={product.thumbnail} alt=""/>
                         </div>

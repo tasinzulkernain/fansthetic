@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../img/logo.svg';
+
 import { add_to_cart, initialize_cart, remove_from_cart, update_cart } from '../../state/slices/cart/cart_slice'
 import { set_categories } from '../../state/slices/statics/statics_slice'
-import { load_scripts } from '../../state/slices/pages/pages_slice'
+import { load_scripts } from '../../state/slices/scripts/scripts_slice'
+
 import { connect } from 'react-redux'
 
 
@@ -16,7 +18,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		initialize_cart: () => dispatch( initialize_cart() ),
-		load_scripts: (page, comp) => dispatch( load_scripts(page,comp) ),
+		load_scripts: comp => dispatch( load_scripts("header", "default") ),
 		update_cart: cart => dispatch( update_cart(cart) ), 
 		add_to_cart: product_id => dispatch( add_to_cart({product_id, quantity: 1}) ),
 		remove_from_cart: product_id => dispatch( remove_from_cart({product_id}) ),
@@ -26,19 +28,19 @@ const mapDispatchToProps = dispatch => {
 
 const Header = props => {
 
-	const { cart, categories, set_categories, load_scripts, add_to_cart, remove_from_cart, initialize_cart } = props;
+	const { cart, categories, set_categories, load_scripts, remove_from_cart, initialize_cart } = props;
 
 	useEffect(() => {
+		// load_scripts("default");
 		initialize_cart();
 		set_categories();
-		load_scripts("header", "default");
 	}, []);
 
-	window.sc = set_categories;
+ 
 
 	useEffect(() => {
 		if(!categories.loading) {
-			load_scripts("header", "default");
+			load_scripts("default");
 		}
 	}, [categories])
 

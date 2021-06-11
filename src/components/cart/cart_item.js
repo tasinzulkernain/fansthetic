@@ -4,14 +4,13 @@ import { remove_from_cart, update_cartitem_quantity } from '../../state/slices/c
 
 const mapDispatchToProps = dispatch => {
     return {
-        dispatch,
         update_cartitem_quantity: (product_id, quantity) => dispatch( update_cartitem_quantity({ product_id, quantity }) ),
         remove_from_cart: product_id => dispatch( remove_from_cart({ product_id }) )
     }
 }
 
 const CartItem = props => {
-    const { product, update_cartitem_quantity, dispatch } = props;
+    const { product, update_cartitem_quantity, remove_from_cart } = props;
     const quantityRef = useRef();
 
     useEffect( () => {

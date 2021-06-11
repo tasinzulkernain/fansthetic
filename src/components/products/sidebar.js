@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { update_loading, load_scripts } from '../../state/slices/pages/pages_slice'
-import { test_val } from '../../state/slices/test/test'
 import { connect } from 'react-redux'
-import api from '../../api'
-import { update_filters, update_products } from '../../state/slices/pages/products/products_slice';
-import _ from 'lodash'
 
+import { test_val } from '../../state/slices/test/test'
+import { load_scripts } from '../../state/slices/scripts/scripts_slice'
+import { update_filters  } from '../../state/slices/pages/products/products_slice';
+
+import _ from 'lodash'
+import { Formik, Form, Field } from 'formik'
+
+import api from '../../api'
 
 const mapStateToProps = state => {
     return {
@@ -16,7 +19,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         test_val: (variable, val) => dispatch(test_val("products.sidebar.".concat(variable), val)),
-        load_scripts: () => dispatch(load_scripts("products", "sidebar")),
+        load_scripts: comp => dispatch(load_scripts("products", comp)),
         // update_loading: loading => dispatch(update_loading("products.sidebar", loading)),
         update_filters: filters => dispatch(update_filters(filters)),
     }
@@ -32,48 +35,12 @@ const Sidebar = props => {
         const fetchData = async () => {
             console.log("came", test_val)
             let data_products, data_categories;
-            try {
-                data_categories = (await api.get('/products/category/')).data.response.categories
-                test_val("categories", data_categories);
-            } catch (e) {
-                console.log("category fetch products sidebar error ", e);
-            }
-
-            try {
-                data_products = (await api.get('/products/')).data.response.products
-                test_val("products", data_products);
-            } catch (err) {
-                console.log("products fetch products sidebar error", err);
-            }
-
-            // try {
-            //     data_categories = await Promise.all(data_categories.map(async (cat, i) => {
-            //         const d = await api.get('/products/', {
-            //             params: {
-            //                 category_title: cat.title
-            //             },
-            //         })
-            //         console.log("setting product count ", cat, " ", i, " ", d.data.response.products.length);
-            //         return { ...cat, product_count: d.data.response.products.length };
-            //     }))
-            // } catch (err) {
-            //     console.log("products cat fetch products sidebar error", err);
-            // }
-
-            test_val("cat_p", data_categories);
             update_categories(data_categories)
-            // update_products(data_products)
-            // update_products_loading(false);
-            // update_loading(false)
             update_filters( filters )
-            load_scripts();
+            load_scripts("sidebar");
         }
         fetchData();
     }, []);
-
-    useEffect(() => console.log("hahalol ", categories.length), [categories])
-    // useEffect(() => test_val("products_cat_all", products), [products])
-    useEffect(() => console.log("updated filters ", filters), [filters])
 
     window._ = _;
 
@@ -118,7 +85,19 @@ const Sidebar = props => {
 
     return (
         <aside className="col-lg-3" id="sidebar_fixed">
-            <form onSubmit={handleFilterSubmit}>
+            <Formik
+                initialValues={{
+                    price_range: {
+                        min: 0,
+                        max: 999999999,
+                    }
+                }}
+                onSubmit={async (values) => {
+                    console.log(values);
+                    update_filters( values );
+                }}
+            >
+            <Form>
             <div className="filter_col">
                 <div className="inner_bt"><a href="#" className="open_filters"><i className="ti-close" /></a></div>
                 {props.categories ? 
@@ -149,8 +128,8 @@ const Sidebar = props => {
                                     <label className="">
                                         {/* {'\u09F3'}0 — {'\u09F3'}50<small>11</small> */}
                                         <div class="input-group mb-3">
-                                            <input name="priceRangeMin" type="number" className="form-control me-3" placeholder="min"/>
-                                            <input name="priceRangeMax" type="number" className="form-control" placeholder="max"/>
+                                            <Field name="price_range.min" type="number" className="form-control me-3" placeholder="min"/>
+                                            <Field name="price_range.max" type="number" className="form-control" placeholder="max"/>
                                             {/* <span className="input-group-text">{'\u09F3'}</span> */}
                                         </div>
                                         {/* <span className="checkmark" /> */}
@@ -167,7 +146,8 @@ const Sidebar = props => {
                     <button className="btn_1 gray" type="reset">Reset</button>
                 </div>
             </div>
-            </form>
+            </Form>
+            </Formik>
         </aside>
 
     )

@@ -1,7 +1,9 @@
+import _ from 'lodash'
+
 const scripts = {
-    // "header": {
-    //     "default": ["/js/main.js"],
-    // },
+    "header": {
+        "default": ["/js/header.js"],
+    },
     "home": {
         "default": ["/js/main.js"],
         "carousel": ["/js/carousel-home.js"]
@@ -18,10 +20,8 @@ const scripts = {
 
 const load_scripts_reducer = (state, action) => {
     const { page, comp } = action.payload;
-    scripts[page][comp].map( script => {
-        if(state[page].loaded_scripts.find( p_script => p_script == script)) return;
-        else state[page].loaded_scripts.push(script);
-    } )
+    console.log("STATEA", scripts[page][comp]);
+    state.to_load_scripts.push(scripts[page][comp]);
 }
 
 

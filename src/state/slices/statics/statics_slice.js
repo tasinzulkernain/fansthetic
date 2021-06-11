@@ -8,7 +8,7 @@ const initialState = {
 }
 
 const statics_slice = createSlice({
-    name: "cart",
+    name: "statics",
     initialState,
     reducers: {
         set_categories: (state,action) => {

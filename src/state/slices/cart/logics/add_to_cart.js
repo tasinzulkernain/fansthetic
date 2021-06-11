@@ -1,7 +1,7 @@
 import { createLogic } from 'redux-logic';
 import { update_cart, update_cart_failure, add_to_cart, update_cart_success } from '../cart_slice';
 import api from '../../../../api'
-import _ from 'lodash'
+import _, { update } from 'lodash'
 
 const addToCartLogic = createLogic({
     type: add_to_cart,
@@ -10,18 +10,18 @@ const addToCartLogic = createLogic({
     async process({ action }, dispatch) {
         try {
             const d = await api.get('/products/cart')
-            let products = d.data.response.cart.products;
-            products = products.map( product => { return {product_id: product.product_id, quantity: product.quantity} } );
-            const foundProductIndex = products.findIndex( product => product.product_id === action.payload.product_id ); 
-            console.log("found product ", foundProductIndex);
-            if( foundProductIndex !== -1 ) {
-                const new_quantity = products[foundProductIndex].quantity + action.payload.quantity;
-                _.pullAt(products, foundProductIndex);
-                console.log( products.concat( {product_id: action.payload.product_id, quantity: new_quantity} ) );
-                dispatch( update_cart( products.concat( {product_id: action.payload.product_id, quantity: new_quantity} ) ) )
-            }else {
-                dispatch( update_cart( products.concat(action.payload) ) );
-            }
+            const quantity = parseInt( action.payload.quantity );
+            console.log(d.data.response.cart.products);
+            let found = false;
+            const new_products = d.data.response.cart.products.map( product => {
+                if(product.product_id === action.payload.product_id) {
+                    found = true;
+                    return { product_id: action.payload.product_id, quantity: parseInt( product.quantity ) + quantity }
+                }else return { product_id: product.product_id, quantity: product.quantity };
+            } )
+            if(!found) new_products.push(action.payload);
+            console.log(new_products);
+            dispatch( update_cart( new_products ) );
         }catch (e) {
             dispatch( update_cart_failure({error: e}) )
         }

@@ -1,21 +1,26 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createLogicMiddleware } from 'redux-logic'
-import pages_slice from './slices/pages/pages_slice'
 import test_slice from "./slices/test/test";
 import cart_slice from './slices/cart/cart_slice'
 import errors_slice from "./slices/errors/errors";
 import statics_slice from './slices/statics/statics_slice'
+import scripts_slice from "./slices/scripts/scripts_slice";
+
+import pages_reducer from './slices/pages/pages_reducer'
+
 
 //logics
 import productsLogic from './slices/pages/products/logics'
 import cartLogic from './slices/cart/logics'
 import staticsLogic from './slices/statics/logics'
+import productLogic from './slices/pages/product/logics'
 
 
 const logics = [
     ...productsLogic,
     ...cartLogic,
-    ...staticsLogic
+    ...staticsLogic,
+    ...productLogic
 ]
 
 console.log("logics ", logics);
@@ -23,18 +28,16 @@ console.log("logics ", logics);
 const logicMiddleware = createLogicMiddleware(logics);
 
 
-const initialState = {
-    "pages": pages_slice.initialState
-}
-
-console.log("pages slice");
-console.log(pages_slice);
+// const initialState = {
+//     "pages": pages_slice.initialState
+// }
 
 const store = configureStore({
-    preloadedState: initialState,
+    // preloadedState: initialState,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logicMiddleware),
     reducer: combineReducers({
-        "pages": pages_slice.reducer,
+        "pages": pages_reducer,
+        "scripts": scripts_slice.reducer,
         "test": test_slice.reducer,
         "statics": statics_slice.reducer,
         "cart": cart_slice.reducer,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CartItem from '../components/cart/cart_item'
+import "../styles/cart.scss"
 
 const mapStateToProps = state => {
     return {
