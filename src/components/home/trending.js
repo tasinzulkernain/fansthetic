@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../img/logo.svg';
-import api from '../../api'
-import Product from '../Global/Product'
-
+// import api from '../../api'
+// import { load_scripts } from '../../state/slices/scripts/scripts_slice';
 
 const Trending = props => {
-    const [products, update_products] = useState([]);
-    useEffect(() => {
-		api({url: '/products/'})
-		.then(d => {
-			console.log("products", d.data.response.products)
-			update_products(d.data.response.products)
-		}).catch(err => {
-			console.log(err);
-		})
-	}, []);
+    
+    const { products } = props;
+
     return (
         <div className="container margin_60_35">
             <div className="main_title">
                 <h2>Trending</h2>
-                <span>Products</span>
-                <p>Cum doctus civibus efficiantur in imperdiet deterruisset</p>
+                {/* <span>Products</span> */}
+                <p>Currently trending products</p>
             </div>
             <div className="row small-gutters">
                 {products.map( product =>
@@ -31,7 +23,7 @@ const Trending = props => {
                                     <span className={`ribbon off`}>Trending</span>
                                 :   <span className={`ribbon hot`}>New</span>
                                 }
-                                <a href={`/product/?id=${product.id}`}>
+                                <a href={`/product/?product_id=${product.id}`}>
                                     <img className="img-fluid" src={product.thumbnail} alt={product.title} />
                                     <img className="img-fluid" src={product.thumbnail} alt={product.title} />
                                 </a>
@@ -46,7 +38,6 @@ const Trending = props => {
                             </div>
                             <ul>
                                 <li><a href="#0" className="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to favorites"><i className="ti-heart" /><span>Add to favorites</span></a></li>
-                                <li><a href="#0" className="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to compare"><i className="ti-control-shuffle" /><span>Add to compare</span></a></li>
                                 <li><a href="#0" className="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i className="ti-shopping-cart" /><span>Add to cart</span></a></li>
                             </ul>
                         </div>

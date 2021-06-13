@@ -2224,6 +2224,21 @@ header {
         position: relative;
         z-index: 999;
 
+        #menu {
+          div {
+            background: $color-1;
+            a {
+              color: #cecece;
+            }
+            &:hover {
+              background: $main-nav-color;
+              a {
+                // color: #0e0e0e
+              }
+            }
+          }
+        }
+
         @include mobile {
             padding: 10px 0;
         }
@@ -2375,7 +2390,7 @@ header {
 			}
 
 		.main_nav {
-			background-color: #fff;
+			background-color: $main-nav-color;
 			&.inner {
 				border-bottom: 1px solid $border-color-1;
 			}
@@ -4508,11 +4523,11 @@ body.modal-open .mm-slideout {
 			transition: opacity .5s ease,-webkit-transform 1.5s cubic-bezier(0,0,.44,1.18);
 			transition: opacity .5s ease,transform 1.5s cubic-bezier(0,0,.44,1.18);
 			transition: opacity .5s ease,transform 1.5s cubic-bezier(0,0,.44,1.18),-webkit-transform 2s cubic-bezier(0,0,.44,1.18);
-			&:nth-child(2) {
-				visibility: visible;
-				opacity: 1;
-				transform: scale(1.05);
-			}
+			// &:nth-child(2) {
+			// 	visibility: visible;
+			// 	opacity: 1;
+			// 	transform: scale(1.05);
+			// }
 		}
 	}
 	}
@@ -6084,7 +6099,7 @@ $borderColor: rgba(0,0,0,.1);
 }
 
 footer {
-	background-color: #172134;
+	background-color: $footer-color;
 	padding: 60px 0 35px 0;
 	@include mobile {padding: 0 0 15px 0;}
 	hr {

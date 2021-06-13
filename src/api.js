@@ -3,9 +3,13 @@ import { setup } from 'axios-cache-adapter'
 const api = setup({
     baseURL: "https://fansthetic.com/api/v1/",
     timeout: 10000,
-    auth: {
-        username: 'hinata',
-        password: 'ilovenaruto'
+    // auth: {
+    //     username: 'hinata',
+    //     password: 'ilovenaruto'
+    // },
+    headers: {
+        "accept": "application/json",
+        "Content-Type": "application/json" 
     },
 
     // `axios-cache-adapter` options

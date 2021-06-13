@@ -8,6 +8,8 @@ import { useLocation } from 'react-router';
 import { connect } from 'react-redux';
 import { add_to_cart } from '../state/slices/cart/cart_slice';
 
+import Loading from '../components/Global/loading';
+
 const mapStateToProps = state => {
     return {
         status: state.pages.product.status,
@@ -42,7 +44,7 @@ const Product = props => {
     return (
         <main>
             { status === "LOADING" ? 
-                <div> Loading </div>
+                <Loading />
             :   <>
                     <div className="container margin_30">
                         {/* <div className="countdown_inner">-20% This offer ends in <div data-countdown="2020/05/15" className="countdown" />

@@ -6,12 +6,30 @@ import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux'
 import store from './state/store'
+import template from './components/alert/alert'
+
+import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+// import AlertTemplate from 'react-alert-template-basic'
+
+const options = {
+  // you can also just use 'bottom center'
+  position: positions.TOP_CENTER,
+  timeout: 5000,
+  offset: '40px',
+  // you can also just use 'scale'
+  transition: transitions.FADE,
+  containerStyle: {
+    zIndex: 100
+  }
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store} >
-      <App />
-    </Provider>
+    <AlertProvider template={template} {...options}>
+      <Provider store={store} >
+        <App />
+      </Provider>
+    </ AlertProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

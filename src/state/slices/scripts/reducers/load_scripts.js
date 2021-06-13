@@ -15,6 +15,15 @@ const scripts = {
     },
     "checkout": {
         "default": ["/js/checkout.js"]
+    },
+    "account": {
+        "default": ["js/main.js"]
+    },
+    "cart": {
+        "default": ["/js/cart.js"]
+    },
+    "orders": {
+        "default": ["/js/orders.js"]
     }
 }
 

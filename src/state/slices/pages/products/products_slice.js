@@ -9,7 +9,7 @@ import _ from 'lodash'
 const initialState = {
     products: [],
     filters: {
-        categories: [],
+        category: "",
         price_range: {
             min: 0,
             max: 999999999

@@ -2,23 +2,16 @@ import React, {useState, useEffect} from 'react';
 import api from '../../api'
 
 const Carousel = props => {
-    const [banners, update_banners] = useState([1,2,3]);
-	useEffect(() => {
-		api({url: '/banners/'})
-		.then(d => {
-			console.log(d.data.response.banners)
-			update_banners(d.data.response.banners)
-		}).catch(err => {
-			console.log(err);
-		})
-	}, []);
+
+    const { banners } = props;
+    console.log(banners);
     return (
         <div id="carousel-home">
             <div className="owl-carousel owl-theme">
                 {banners.map(banner => 
                     <div className="owl-slide cover" style={{backgroundImage: `url(${banner.thumbnail})`}} alt={banner.alt}>
                     <div className="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.5)">
-                        <div className="container">
+                        {/* <div className="container">
                         <div className="row justify-content-center justify-content-md-end">
                             <div className="col-lg-6 static">
                             <div className="slide-text text-right white">
@@ -30,7 +23,7 @@ const Carousel = props => {
                             </div>
                             </div>
                         </div>
-                        </div>
+                        </div> */}
                     </div>
                     </div>
                 )}

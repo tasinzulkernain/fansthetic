@@ -1,5 +1,5 @@
-import React, { useEffect, useParams } from 'react';
-import { connect } from 'react-redux'
+import React, { useEffect, useParams, useState } from 'react';
+import { connect, useSelector } from 'react-redux'
 import Siderbar from '../components/products/sidebar'
 import List from '../components/products/list'
 
@@ -13,6 +13,7 @@ import { useLocation } from 'react-router';
 const mapStateToProps = state => {
     return {
         // loading: state.pages.products.loading,
+        filters: state.pages.products.filters,
         products: state.pages.products.products,
     };
 }
@@ -27,24 +28,39 @@ const mapDispatchToProps = dispatch => {
 }
 
 const Products = props => {
-    const { products, load_scripts } = props
-
+    const { products, load_scripts, filters, update_filters } = props
     const location = useLocation()
-    const qparams = qs.parse(location.search) 
 
-    console.log("loading : ", props.state);
+    // useEffect( () => {
+    //     update_filters({})
+    //     console.log("qparams ", qparams);
+    // }, [qparams] )
+
+    // console.log("loading : ", props.state);
     // update_loading(true);
+    
+    const set_filters_from_param = () => {
+        const qparams = qs.parse(location.search);
+
+        update_filters({
+            ...filters,
+            category: qparams.category ? qparams.category : "",
+            search: qparams.search ? qparams.search : ""
+        })
+        
+        console.log(qparams);
+    }
+    
     useEffect( () => {
-        if(qparams.category) {
-            update_filters({"categories": [qparams.category]});
-        }
+        set_filters_from_param();
         load_scripts("default");
     }, []);
+
+    useEffect( () => {
+        set_filters_from_param();        
+        load_scripts("default");
+    }, [location] )
     
-    // useEffect( () => {
-    //     // if(!loading) return;        
-    //     console.log(loaded_scripts);
-    // }, [loaded_scripts] )
 
     return (
         <div className="container margin_30">

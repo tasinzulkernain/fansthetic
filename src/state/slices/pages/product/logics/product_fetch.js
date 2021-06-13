@@ -12,7 +12,7 @@ const fetchProductLogic = createLogic({
             const d = await api.get(`/products/${action.payload.product_id}`);
             dispatch( fetch_product_success( { product: d.data.response.product } ) );
         } catch(e) {
-            dispatch( fetch_product_failure( { error: e } ) );
+            dispatch( fetch_product_failure( { error: e.response } ) );
         }
     }
 })

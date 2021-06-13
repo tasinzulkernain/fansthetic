@@ -94,7 +94,7 @@ const Sidebar = props => {
                 }}
                 onSubmit={async (values) => {
                     console.log(values);
-                    update_filters( values );
+                    update_filters( {...filters, ...values} );
                 }}
             >
             <Form>

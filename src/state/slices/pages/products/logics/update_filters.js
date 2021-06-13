@@ -5,39 +5,31 @@ import api from '../../../../../api'
 
 const updateFiltersLogic = createLogic({
     type: update_filters,
-    latest: true,
+    // latest: true,
 
     async process({ action }, dispatch, done) {
         dispatch( update_products_api_status("PROCESSING") )
-        const { categories, price_range } = action.payload.filters;
-        let products = [];
-        const params = {
-            price_lte: price_range ? price_range.min : 0,
-            price_gte: price_range ? price_range.max : 999999999
+        const { category, price_range, search } = action.payload.filters;
+
+        const params = {}
+        if(search) {
+            params.search = search;
         }
-        // console.log("came1 ", categories.length);
+        if(price_range) {
+            params.price__gte = price_range ? price_range.min : 0;
+            params.price__lte = price_range ? price_range.max : 999999999;
+        }
+        if(category) {
+            params.category__title = category 
+        }
+
         try {
-            // if (categories.length === 0) {
-                const d = await api.get('/products', { params });
-                console.log("came ", params);
-                products = d.data.response.products;
-            // }else {
-            //     products = await categories.reduce( async (acc_p, cat) => {
-            //         const acc = await acc_p;
-            //         console.log("came 3nd ", cat)
-            //         const d = await api.get('/products/', {
-            //             params: {
-            //                 ...params,
-            //                 category_title: cat.title
-            //             },
-            //         })
-            //         return _.unionBy(acc, d.data.response.products, "title");
-            //     }, Promise.resolve(products));
-            // }
-            // console.log("came in ", products);
-            dispatch( update_products_api_status("SUCCESS", products) );
+            const d = await api.get('/products', { params });
+            console.log(params);
+            console.log(d);
+            dispatch( update_products_api_status("SUCCESS", d.data.response.products) );
         }catch (e) {
-            dispatch( update_products_api_status("FAILURE") )
+            dispatch( update_products_api_status("FAILURE", {error: e.response}) )
         }
         done();
     }

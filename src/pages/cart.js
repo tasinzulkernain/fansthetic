@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import CartItem from '../components/cart/cart_item'
+import { load_scripts } from '../state/slices/scripts/scripts_slice';
 import "../styles/cart.scss"
 
 const mapStateToProps = state => {
@@ -9,10 +10,27 @@ const mapStateToProps = state => {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        "load_scripts": () => dispatch( load_scripts("cart", "default") )
+    }
+}
 
 const Cart = props => {
-    const { cart } = props;
-    const { products, count, total_amount, status } = cart;
+    const { cart, load_scripts } = props;
+    const { products, total_amount, status } = cart;
+
+    // useEffect( () => {
+    //     if(status == "UPDATED") { 
+    //         load_scripts();
+    //     }
+    // }, [] )
+
+    useEffect( () => {
+        if(status == "UPDATED") { 
+            load_scripts();
+        }
+    }, [status] )
 
     return (
         <main className="bg_gray">
@@ -92,4 +110,4 @@ const Cart = props => {
     )
 }
 
-export default connect(mapStateToProps, null)(Cart);
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

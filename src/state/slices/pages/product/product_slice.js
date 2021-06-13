@@ -7,10 +7,6 @@ const initialState = {
     status: "LOADING"
 }
 
-const scripts = {
-    "default": ["/js/main.js", "sticky_sidebar.min.js"],
-}
-
 const product_slice = createSlice({
     name: "product",
     initialState,

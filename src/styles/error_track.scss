@@ -5,7 +5,7 @@
 /*============================================================================================*/
 #error_page, #track_order {
 	width: 100%;
-	height: 500px;
+	height: 800px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -44,5 +44,13 @@
 		-webkit-filter: brightness(115%);
 		filter: brightness(115%);
 	}
+	}
+}
+
+.products_carousel {
+	max-width: max-content;
+	figure {
+		// max-width: max-content;
+		background-color: #fff !important;
 	}
 }
