@@ -14,6 +14,8 @@ const loginLogic = createLogic({
     async process({ getState, action }, dispatch, done) {
         try {
             const { username, password } = action.payload;
+            Cookies.remove('Authorization');
+
             const d = await api.post('/auth/login/', {
                 username: username,
                 password: password

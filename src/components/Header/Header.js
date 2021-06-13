@@ -15,7 +15,7 @@ const mapStateToProps = state => {
 	return {
 		auth: state.auth,
 		cart: state.cart,
-		categories: state.statics.categories
+		categories: state.statics.categories,
 	}
 }
 
@@ -72,7 +72,7 @@ const Header = props => {
 				<div className="row small-gutters">
 					<div className="col-xl-3 col-lg-3 d-lg-flex align-items-center">
 						<div id="logo">
-							<a href="/"><img src={Logo} alt="" width="65" height="65"/></a>
+							<Link to="/"><img src={Logo} alt="" width="65" height="65"/></Link>
 						</div>
 					</div>
 					<nav className="col-xl-6 col-lg-7">
@@ -100,7 +100,10 @@ const Header = props => {
 									</ul> */}
 								</li>
 								<li className="header-menu">
-									<a href="/contact" > Contact us </a>
+									<Link href="/contact" > Contact us </Link>
+								</li>
+								<li className="header-menu">
+									<Link to="/products" > Products </Link>
 								</li>
 							</ul>
 						</div>
@@ -180,7 +183,7 @@ const Header = props => {
 								{/* <!-- /dropdown-cart--> */}
 							</li>
 							<li>
-								<a href="#0" className="wishlist"><span>Wishlist</span></a>
+								<Link to="/wishlist" className="wishlist"><span>Wishlist</span></Link>
 							</li>
 							<li>
 								<div className="dropdown dropdown-access">
@@ -188,19 +191,23 @@ const Header = props => {
 									<div className="dropdown-menu">
 										{
 											auth.status == "LOGGED IN" ? <Link to="/" onClick={ logout } className="btn_1">Log out</Link>
-											: <Link to="/account" className="btn_1">Sign In or Sign Up</Link>
+											: <Link to="/account" className="btn_1">Log In or Sign Up</Link>
 										}
-										<ul>
-											<li>
-												<a href="track-order.html"><i className="ti-truck"></i>Track your Order</a>
-											</li>
-											<li>
-												<Link to="/orders"><i className="ti-package"></i>My Orders</Link>
-											</li>
-											<li>
-												<Link to="/account"><i className="ti-user"></i>My Profile</Link>
-											</li>
-										</ul>
+										{
+											auth.status === "LOGGED IN" ? 
+											<ul>
+												<li>
+													<Link to="/orders"><i className="ti-truck"></i>Track your Order</Link>
+												</li>
+												<li>
+													<Link to="/orders"><i className="ti-package"></i>My Orders</Link>
+												</li>
+												<li>
+													<Link to="/profile"><i className="ti-user"></i>My Profile</Link>
+												</li>
+											</ul>
+										:	<></>
+										}
 									</div>
 								</div>
 								{/* <!-- /dropdown-access--> */}

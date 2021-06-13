@@ -7,6 +7,8 @@ import { fetch_banners, fetch_trending_products } from '../state/slices/pages/ho
 import { connect, useSelector } from 'react-redux';
 import { load_scripts } from '../state/slices/scripts/scripts_slice';
 import Loading from '../components/Global/loading';
+import { set_categories } from '../state/slices/statics/statics_slice';
+import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = state => {
     return {
@@ -21,18 +23,22 @@ const mapDispatchToProps = dispatch => {
     return {
         fetch_trending_products: () => dispatch( fetch_trending_products() ),
         fetch_banners: () => dispatch( fetch_banners() ),
-        load_scripts: comp => dispatch( load_scripts("home", comp) )
+        load_scripts: comp => dispatch( load_scripts("home", comp) ),
+        set_categories: () => dispatch( set_categories() )
     }
 }
 
 
 const Home = props => {
-    const { loaded, banners, categories, trending_products, fetch_trending_products, fetch_banners, load_scripts } = props;
+    const { loaded, banners, categories, set_categories, trending_products, fetch_trending_products, fetch_banners, load_scripts } = props;
     const [ loading, update_loading ] = useState(true);
 
     useEffect( () => {
         fetch_trending_products();
         fetch_banners();
+        if(!categories.length) {
+            set_categories();
+        }
         load_scripts('default');
     }, [])
     
@@ -60,4 +66,4 @@ const Home = props => {
   )  
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( Home );
+export default withRouter( connect( mapStateToProps, mapDispatchToProps )( Home ) );

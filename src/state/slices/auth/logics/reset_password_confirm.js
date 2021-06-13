@@ -18,6 +18,8 @@ const resetPasswordConfirmLogic = createLogic({
                 new_password1, new_password2, uid, token
             })
             
+            Cookies.remove('Authorization');
+            
             dispatch( reset_password_success() );
         }catch (e) {
             dispatch( reset_password_failure({error: e.response}) )

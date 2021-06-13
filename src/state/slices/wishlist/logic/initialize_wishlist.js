@@ -11,7 +11,7 @@ const initializeWishlistLogic = createLogic({
             const d = await api.get('/products/wishlist')
             dispatch( update_wishlist_success(d.data.response.wishlist) );
         }catch (e) {
-            dispatch( update_wishlist_failure(e) )
+            dispatch( update_wishlist_failure(e.response) )
         }
     }
 })

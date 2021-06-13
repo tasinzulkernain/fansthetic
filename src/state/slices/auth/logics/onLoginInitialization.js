@@ -3,6 +3,8 @@ import { login, login_success, login_failure, interceptor_processed } from '../a
 import { initialize_cart } from '../../cart/cart_slice';
 
 import _ from 'lodash'
+import { set_categories } from '../../statics/statics_slice';
+import { initialize_wishlist } from '../../wishlist/wishlist_slice';
 
 const onLoginInitializeLogic = createLogic({
     type: login_success,
@@ -10,6 +12,8 @@ const onLoginInitializeLogic = createLogic({
 
     async process({ action }, dispatch, done) {
         dispatch( initialize_cart() );
+        dispatch( initialize_wishlist() );
+        dispatch( set_categories() );
     }
 })
 

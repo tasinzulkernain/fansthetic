@@ -35,49 +35,13 @@ const Sidebar = props => {
         const fetchData = async () => {
             console.log("came", test_val)
             let data_products, data_categories;
-            update_categories(data_categories)
-            update_filters( filters )
+            // update_categories(data_categories)
+            // update_filters( filters )
             load_scripts("sidebar");
         }
-        fetchData();
+        // fetchData();
     }, []);
 
-    window._ = _;
-
-
-    const handleFilterSubmit = e => {
-        e.preventDefault();
-        window.form = e.target;
-        const elements = e.target.elements;
-        const filters_t = _.cloneDeep(filters);
-        update_filterError(false);
-        for(let i=0; i<elements.length; i++) {
-            const elem_name = elements[i].name.split("_");
-            const elem = elements[i];
-            switch (elem_name[0]) {
-                case 'categories':
-                    if(elem.checked)
-                        filters_t.categories = _.uniq(filters_t.categories.concat(elem_name[1]))
-                    else 
-                        filters_t.categories = _.without(filters_t.categories, elem_name[1])
-                    break;
-
-                case 'priceRangeMin':
-                    filters_t.price_range.min = elem.value;
-                    break;
-                    
-                case 'priceRangeMax':
-                    filters_t.price_range.max = elem.value;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        update_filters(filters_t);
-        // console.log(filters_t);
-    }
 
     useEffect( () => {
         console.log("props ", props);

@@ -6,7 +6,8 @@ const initialState = {
     statusText: "",
     credentials: {},
     error: {},
-    status: ""
+    status: "",
+    state: "LOGGED OUT",
 }
 
 const auth_slice = createSlice({
@@ -21,6 +22,7 @@ const auth_slice = createSlice({
             // state.statusText = "Hold on, logging you in"
         },
         login_success: (state, action) => {
+            state.state = "LOGGED IN"
             state.status = "LOGGED IN";
             state.statusText = "Logged you in"
             state.credentials = {
@@ -39,6 +41,7 @@ const auth_slice = createSlice({
             // state.statusText = "logging you out :("
         },
         logout_success: (state, action) => {
+            state.state = "LOGGED OUT"
             state.status = "LOGGED OUT"
             state.statusText = "Logged you out"
             state.credentials = {}

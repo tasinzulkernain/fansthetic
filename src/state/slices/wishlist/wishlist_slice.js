@@ -1,10 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    "count": 0,
-    "total_amount": 0,
-    "products": [],
-    "status": "DEFAULT"
+    wishlist: [],
+    status: "INITIALIZING"
 }
 
 const wishlist_slice = createSlice({
@@ -25,7 +23,7 @@ const wishlist_slice = createSlice({
         },
         update_wishlist_success: (state, action) => {
             state.status = "UPDATED"
-            state.products = action.payload;
+            state.wishlist = action.payload;
         },
         update_wishlist_failure: (state, action) => {
             state.status = "FAILED"
