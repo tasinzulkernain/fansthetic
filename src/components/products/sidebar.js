@@ -85,8 +85,8 @@ const Sidebar = props => {
                 {/* /filter_type */}
                 { props.price ? 
                     <div className="filter_type version_2">
-                        <h4><a href="#filter_4" data-toggle="collapse" className="closed">Price</a></h4>
-                        <div className="collapse" id="filter_4">
+                        <h4><a href="#filter_4">Price</a></h4>
+                        <div id="filter_4">
                             <ul>
                                 <li>
                                     <label className="">

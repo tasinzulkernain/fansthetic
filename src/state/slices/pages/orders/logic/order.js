@@ -13,7 +13,10 @@ const fetchOrderLogic = createLogic({
                 params: {
                     search: action.payload.id
                 }
-             });  
+            });  
+            if( d.data.response.orders.length == 0 ) {
+                dispatch( fetch_order_failure( { error: {message: "no order found for the provided id"} } ) )
+            }
             console.log(d.data.response);
             dispatch( fetch_order_success( { order: d.data.response.orders[0] } ) );
         } catch(e) {

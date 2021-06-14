@@ -20,6 +20,7 @@ const mapStateToProps = state => {
     return {
         status: state.pages.orders.status,
         orders: state.pages.orders.orders,
+        statusText: state.pages.orders.statusText,
         order: state.pages.orders.order,
     }
 }
@@ -34,7 +35,7 @@ const mapDispatchToProps = dispatch => {
 
 const Orders = props => {
 
-    const { order, status, orders, fetch_order, fetch_orders, load_scripts } = props;
+    const { order, status, orders, fetch_order, fetch_orders, statusText } = props;
 
     const location = useLocation()
     const history = useHistory();
@@ -67,7 +68,7 @@ const Orders = props => {
 
     return (
         <main>
-            {1!=1 ?
+            {status === "LOADING" ?
                 <Loading />
                 : <>
                     <div>
@@ -81,6 +82,11 @@ const Orders = props => {
                                             <input id="invoice_id" type="text" className="form-control" placeholder="Invoice ID" />
                                             <input onClick={handle_fetch_order_by_id} type="submit" defaultValue="Search" />
                                         </div>
+                                        { statusText !== "" ?
+                                            <h5 className="">{ statusText }</h5>
+                                        :   <></>
+                                        }
+            
                                     </div>
                                 </div>
                                 {/* /row */}
@@ -88,6 +94,8 @@ const Orders = props => {
                             {/* /container */}
                         </div>
                         {/* /track_order */}
+                        
+                        
                         { order && order.name ? 
                             <div className="bg_white">
                                 <div class="tabs_product bg_white version_2">

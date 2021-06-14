@@ -252,7 +252,7 @@ const Checkout = props => {
                                     </label>
                                 </li>
                             </ul>
-                            <div className="payment_info d-none d-sm-block"><figure><img src="img/cards_all.svg" alt /></figure>	<p>Sensibus reformidans interpretaris sit ne, nec errem nostrum et, te nec meliore philosophia. At vix quidam periculis. Solet tritani ad pri, no iisque definitiones sea.</p></div>
+                            {/* <div className="payment_info d-none d-sm-block"><figure><img src="img/cards_all.svg" alt /></figure>	<p>Sensibus reformidans interpretaris sit ne, nec errem nostrum et, te nec meliore philosophia. At vix quidam periculis. Solet tritani ad pri, no iisque definitiones sea.</p></div> */}
                             <h6 className="pb-2">Shipping Method</h6>
                             <ul>
                                 <li>

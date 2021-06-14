@@ -5,7 +5,7 @@ $("#carousel-home .owl-carousel").on("initialized.owl.carousel", function() {
   }, 200);
 });
 
-const $owlCarousel = $("#carousel-home .owl-carousel").owlCarousel({
+$owlCarousel = $("#carousel-home .owl-carousel").owlCarousel({
   items: 1,
   loop: true,
   nav: false,
@@ -22,6 +22,9 @@ const $owlCarousel = $("#carousel-home .owl-carousel").owlCarousel({
         }
     }
 });
+
+
+console.log('owl carousel loaded');
 
 $owlCarousel.on("changed.owl.carousel", function(e) {
   $(".owl-slide-animated").removeClass("is-transitioned");

@@ -6,14 +6,28 @@ import _ from 'lodash'
 import { set_categories } from '../../statics/statics_slice';
 import { initialize_wishlist } from '../../wishlist/wishlist_slice';
 
+import { history } from '../../../../App';
+
+
 const onLoginInitializeLogic = createLogic({
     type: login_success,
     latest: true,
 
     async process({ action }, dispatch, done) {
-        dispatch( initialize_cart() );
-        dispatch( initialize_wishlist() );
-        dispatch( set_categories() );
+        // action.payload.location.href = "/";
+        if(action.payload.redirect) {
+            // console.log("Came history");
+            history.push('/?auth_redirect')
+            // history.location.href = "/";
+        }
+            dispatch( initialize_cart() );
+            dispatch( initialize_wishlist() );
+            dispatch( set_categories() );    
+        // }
+        // history.push('/');
+
+        done();
+        // history.go(0);
     }
 })
 

@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import CartItem from '../components/cart/cart_item'
 import { load_scripts } from '../state/slices/scripts/scripts_slice';
+import { Link } from 'react-router-dom'
+
 import "../styles/cart.scss"
 
 const mapStateToProps = state => {
@@ -99,7 +101,7 @@ const Cart = props => {
                                     <span>Total</span> ${total_amount}
                                 </li>
                             </ul>
-                            <a href="cart-2.html" className="btn_1 full-width cart">Proceed to Checkout</a>
+                            <Link to="/checkout" className="btn_1 full-width cart">Proceed to Checkout</Link>
                         </div>
                     </div>
                 </div>

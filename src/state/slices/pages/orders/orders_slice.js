@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     orders: [],
     order: {},
+    statusText: "",
 }
 
 const orders_slice = createSlice({
@@ -14,10 +15,12 @@ const orders_slice = createSlice({
         },
         "fetch_orders_success": (state, action) => {
             state.status = "SUCCESS";
+            state.statusText = "";
             state.orders = action.payload.orders;
         },
         "fetch_orders_failure": (state, action) => {
             state.status = "FAILED";
+            state.statusText = action.payload.error.message;
             state.error = action.payload.error;
         },
         "fetch_order": (state) => {
@@ -25,10 +28,12 @@ const orders_slice = createSlice({
         },
         "fetch_order_success": (state, action) => {
             state.status = "SUCCESS";
+            state.statusText = "";
             state.order = action.payload.order;
         },
         "fetch_order_failure": (state, action) => {
             state.status = "FAILED";
+            state.statusText = action.payload.error.message;
             state.error = action.payload.error;
         },
     },

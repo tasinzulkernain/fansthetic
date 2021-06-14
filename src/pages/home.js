@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Carousel from '../components/home/carousel'
 import Categories from '../components/home/categories'
 import Trending from '../components/home/trending'
+import "../styles/home_1.scss"
 
 import { fetch_banners, fetch_trending_products } from '../state/slices/pages/home/home_slice';
 import { connect, useSelector } from 'react-redux';
 import { load_scripts } from '../state/slices/scripts/scripts_slice';
 import Loading from '../components/Global/loading';
 import { set_categories } from '../state/slices/statics/statics_slice';
-import { withRouter } from 'react-router-dom';
+import { useLocation, withRouter } from 'react-router-dom';
 
 const mapStateToProps = state => {
     return {
@@ -33,6 +34,14 @@ const Home = props => {
     const { loaded, banners, categories, set_categories, trending_products, fetch_trending_products, fetch_banners, load_scripts } = props;
     const [ loading, update_loading ] = useState(true);
 
+    const location = useLocation();
+
+    useEffect( () => {
+        // if(window.location.search.includes('redirect')) {
+        //     window.location.href = "/";
+        // }
+    }, [location] )
+
     useEffect( () => {
         fetch_trending_products();
         fetch_banners();
@@ -46,13 +55,18 @@ const Home = props => {
         if(loaded.includes('banners')) {
         }
         if(loaded.length >= 3) {
-            load_scripts('carousel');
             update_loading(false);
         } else {
             update_loading(true);
         }
 
     }, [loaded] )
+
+    useEffect( () => {
+        if(loading == false) {
+            load_scripts('carousel');
+        }
+    }, [loading] )
 
     return (
         loading ? 

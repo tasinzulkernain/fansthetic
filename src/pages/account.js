@@ -7,12 +7,13 @@ import { useAlert } from 'react-alert';
 
 import { login, signup, reset_password_initiate, reset_password_confirm } from '../state/slices/auth/auth_slice'
 import { load_scripts } from '../state/slices/scripts/scripts_slice';
+import { useHistory } from 'react-router-dom';
 
 const mapDispatchToProps = dispatch => {
     return {
         reset_password_initiate: (email) => dispatch( reset_password_initiate({email}) ),
         reset_password_confirm: (values) => dispatch( reset_password_confirm(values) ), 
-        login: (username, password) => dispatch( login({username, password}) ),
+        login: (username, password) => dispatch( login({username, password, redirect:true}) ),
         signup: values => dispatch( signup(values) ),
         load_scripts: () => dispatch( load_scripts("account", "default") )
     }
@@ -27,10 +28,11 @@ const mapStateToProps = state => {
 
 const Account = props => {
     const { login, signup, status, statusText, load_scripts, reset_password_confirm, reset_password_initiate } = props;
-    const alert = useAlert();
+    const history = useHistory();
 
     useEffect( () => {
         load_scripts();
+        window.hs = history;
     }, [] )
     
 
@@ -86,7 +88,6 @@ const Account = props => {
                                         password: "",
                                     }}
                                     onSubmit= {values => {
-                                        console.log(values);
                                         login( values.username, values.password );
                                     }}
                                 >

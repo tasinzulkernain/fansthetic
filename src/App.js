@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import './styles/css/bootstrap.css';
 import './styles/App.scss';
-import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom'
+import { Switch, Route, Router, Redirect } from 'react-router-dom'
 import { connect, Provider } from 'react-redux'
 import Cookies from 'js-cookie';
 import forge from 'node-forge'
@@ -24,6 +24,7 @@ import Wishlist from './pages/wishlist';
 import Profile from './pages/profile'
 import NotFound from './pages/not_found';
 
+import { createBrowserHistory, createHashHistory } from 'history';
 
 const mapStateToProps = state => {
     return {
@@ -66,18 +67,22 @@ function PrivateRoute({ children, ...rest }) {
     );
 }
 
+const history = createBrowserHistory();
+
 const App = props => {
     const { to_load_scripts, script_loaded, auth, fatal_error, login, logout, commands } = props;
-    
+
     useEffect(() => {
         Promise.all(to_load_scripts.map(async script_src => {
-            if (document.querySelector(`script[src="${script_src}"]`)) {
-                console.log("Removing ", script_src);
-                document.querySelector(`script[src="${script_src}"]`).remove();
-            }
+            // if (document.querySelector(`script[src="${script_src}"]`)) {
+            //     console.log("Removing ", script_src);
+            //     document.querySelector(`script[src="${script_src}"]`).remove();
+            // }0
             const script_elem = document.createElement('script');
+            script_elem.type = 'text/javascript';
             script_elem.src = script_src;
             document.body.appendChild(script_elem);
+            document.body.removeChild(document.body.lastChild);
             console.log("loaded script ", script_src);
             script_loaded(script_src);
         }))
@@ -113,9 +118,8 @@ const App = props => {
     return (
         <div className="App">
             <authContext.Provider value={{logged_in: Cookies.get('Authorization') !== undefined}}>
-            <BrowserRouter
-
-            >
+            
+            <Router history={history} >
                 <Header />
                 <Switch>
                     <Route path="/" exact>
@@ -154,11 +158,12 @@ const App = props => {
                 </Switch>
                 <Footer />
                 <div id="toTop"></div>
-            </ BrowserRouter>
+            </ Router>
             </authContext.Provider>
         </div>
     );
 }
 
 
+export { history };
 export default connect(mapStateToProps, mapDispatchToProps)( App );

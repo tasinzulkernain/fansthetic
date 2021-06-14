@@ -1,7 +1,10 @@
 (function ($) {
 
 	"use strict";
-	
+
+	//custom stuff
+	let $owlCarousel;
+
 	console.log("window");
 	console.log($(window).width());
 

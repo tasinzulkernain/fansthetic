@@ -6,7 +6,6 @@ import _ from 'lodash'
 import forge from 'node-forge';
 import Cookies from 'js-cookie';
 
-
 const loginLogic = createLogic({
     type: login,
     latest: true,
@@ -26,8 +25,9 @@ const loginLogic = createLogic({
 
 
             dispatch( login_success( {
+                ...action.payload,
                 username: d.data.response.username,
-                password: action.payload.password
+                password: action.payload.password,
             } ) );
         }catch (e) {
             dispatch( login_failure({error: e.response}) )
