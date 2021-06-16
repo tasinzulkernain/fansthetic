@@ -3,7 +3,6 @@ import '../styles/account.scss';
 
 import { Formik, Form, Field } from 'formik';
 import { connect } from 'react-redux';
-import { useAlert } from 'react-alert';
 import qs from 'query-string'
 
 import { login, signup, reset_password_initiate, reset_password_confirm } from '../state/slices/auth/auth_slice'
