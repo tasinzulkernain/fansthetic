@@ -17,6 +17,7 @@ const mapStateToProps = state => {
         status: state.pages.products.status,
         filters: state.pages.products.filters,
         products: state.pages.products.products,
+        next: state.pages.products.next
     };
 }
 
@@ -30,7 +31,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const Products = props => {
-    const { products, load_scripts, filters, update_filters, status } = props
+    const { products, load_scripts, filters, update_filters, status, next } = props
     const location = useLocation()
 
     // useEffect( () => {
@@ -72,7 +73,7 @@ const Products = props => {
                 <div className="row">
                     <Siderbar price />
                     <div class="col-lg-9">
-                        <List products={products} />
+                        <List products={products} next={next}/>
                     </div>
                 </div> 
             </div>
