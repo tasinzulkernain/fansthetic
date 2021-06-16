@@ -64,7 +64,7 @@ const Products = props => {
         set_filters_from_param();        
         load_scripts("default");
     }, [location] )
-    
+     
 
     return (
         status === "PROCESSING" ? 
