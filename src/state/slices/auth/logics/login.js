@@ -5,6 +5,7 @@ import api from '../../../../api'
 import _ from 'lodash'
 import forge from 'node-forge';
 import Cookies from 'js-cookie';
+import { show_alert } from '../../commands/commands_slice';
 
 const loginLogic = createLogic({
     type: login,
@@ -13,7 +14,7 @@ const loginLogic = createLogic({
     async process({ getState, action }, dispatch, done) {
         try {
             const { username, password } = action.payload;
-            Cookies.remove('Authorization');
+            // Cookies.remove('Authorization');
 
             const d = await api.post('/auth/login/', {
                 username: username,
@@ -29,9 +30,11 @@ const loginLogic = createLogic({
                 username: d.data.response.username,
                 password: action.payload.password,
             } ) );
+            // dispatch( show_alert( {text: "Logged you in :D", timeout: 2000} ) )
         }catch (e) {
             dispatch( login_failure({error: e.response}) )
         }
+        done();
     }
 })
 

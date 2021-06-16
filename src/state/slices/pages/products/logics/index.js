@@ -1,4 +1,4 @@
-import productsApiStatusLogic from "./products_api_status";
 import updateFiltersLogic from "./update_filters";
+import updateProductsLogic from "./update_products";
 
-export default [ productsApiStatusLogic, updateFiltersLogic ]
+export default [ updateProductsLogic, updateFiltersLogic ]

@@ -2,10 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 const initialState = {
-    re_initialize: false
+    re_initialize: false,
+    alert_item: {}
 }
 
-const errors_slice = createSlice({
+const commands_slice = createSlice({
     name: "commands",
     initialState,
     reducers: {
@@ -14,10 +15,16 @@ const errors_slice = createSlice({
         },
         re_initialize_done: state => {
             state.re_initialize = false
+        },
+        show_alert: (state, action) => {
+            state.alert_item = {text: action.payload.text, timeout: action.payload.timeout || 1500}; 
+        },
+        show_alert_done: (state) => {
+            state.alert_item = {};
         }
     },
 }) 
 
 
-export const { fatal_error } = errors_slice.actions
-export default errors_slice
+export const { show_alert, show_alert_done } = commands_slice.actions
+export default commands_slice

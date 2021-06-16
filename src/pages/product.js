@@ -31,11 +31,12 @@ const Product = props => {
     const [quantity, update_quantity] = useState( 1 ); 
 
     const location = useLocation()
-    const qparams = qs.parse(location.search)
     
     useEffect( () => {
+        const qparams = qs.parse(location.search)
         fetch_product( qparams.product_id );
-    }, [] );
+        console.log(JSON.stringify(qs.parse(location.search)))
+    }, [location] );
 
     useEffect( () => {
         console.log(product);

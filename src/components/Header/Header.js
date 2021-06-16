@@ -47,13 +47,13 @@ const Header = props => {
 		}
 		initialize_cart();
 		set_categories();
-		load_scripts("default");
+		// load_scripts("default");
 	}, []);
 
 
 	useEffect(() => {
 		if(!categories.loading) {
-			load_scripts("default");
+			setTimeout( () => load_scripts("default"), 500 );
 		}
 	}, [categories])
 
@@ -65,7 +65,6 @@ const Header = props => {
 
 	return (
 	<header className="version_1">
-      	<div className="gg" />
 		<div className="layer"></div>{/*<!-- Mobile menu overlay mask -->*/}
 		<div className="main_header">
 			<div className="container">
@@ -86,7 +85,7 @@ const Header = props => {
 						{/* <!-- Mobile menu button --> */}
 						<div className="main-menu">
 							<div id="header_menu">
-								<Link to="/index"><img src={Logo} alt="" width="100" height="100"/></Link>
+								<Link to="/"><img src={Logo} alt="" width="100" height="100"/></Link>
 								<a href="#" className="open_close" id="close_in"><i className="ti-close"></i></a>
 							</div>
 							<ul>
@@ -104,6 +103,12 @@ const Header = props => {
 								</li>
 								<li className="header-menu">
 									<Link to="/products" > Products </Link>
+								</li>
+								<li className="header-menu">
+									<Link to="/orders" > Orders </Link>
+								</li>
+								<li className="header-menu">
+									<Link to="/profile" > Profile </Link>
 								</li>
 							</ul>
 						</div>
@@ -137,12 +142,14 @@ const Header = props => {
 									<div id="menu">
 										<ul>
 											{!categories.loading && categories.list.map( cat => 
+												<Link to={`/products?${new URLSearchParams({category: cat.title}).toString()}`}>
 												<li className="w-100 ">
-													<div className="d-flex w-100 p-2">
+													<div className="d-flex w-100 px-2 py-1">
 														<img className="border rounded" src={cat.thumbnail} width="50" height="50"/>
 														<Link className="flex-grow-1" to={`/products?${new URLSearchParams({category: cat.title}).toString()}`}>{cat.title}</Link>
 													</div>
 												</li>
+												</Link>
 											)}
 										</ul>
 									</div>
@@ -153,7 +160,11 @@ const Header = props => {
 					<div className="col-xl-6 col-lg-7 col-md-6 d-none d-md-block">
 						<div className="custom-search-input">
 							<input type="text" placeholder="Search over 500 products" value={search_string} onChange={e => update_search_string(e.target.value)} onKeyUp={ handleKeyUp }/>
-							<button type="submit"><a id="search_button" href={`/products?${new URLSearchParams({search: search_string}).toString()}`} ><i className="header-icon_search_custom"/></a></button>
+							<button type="submit">
+								<Link id="search_button" href={`/products?${new URLSearchParams({search: search_string}).toString()}`} >
+									<i className="header-icon_search_custom"/>
+								</Link>
+							</button>
 						</div>
 					</div>
 					<div className="col-xl-3 col-lg-2 col-md-3">
@@ -187,7 +198,7 @@ const Header = props => {
 							</li>
 							<li>
 								<div className="dropdown dropdown-access">
-									<Link to="/account" className="access_link"><span>Account</span></Link>
+									<Link to="/profile" className="access_link"><span>Account</span></Link>
 									<div className="dropdown-menu">
 										{
 											auth.status == "LOGGED IN" ? <Link to="/" onClick={ logout } className="btn_1">Log out</Link>
@@ -213,15 +224,15 @@ const Header = props => {
 								{/* <!-- /dropdown-access--> */}
 							</li>
 							<li>
-								<Link to={`/products?${new URLSearchParams({search: search_string}).toString()}`} className="btn_search_mob"><span>Search</span></Link>
+								<a href="javascript:void(0);" class="btn_search_mob"><span>Search</span></a>
 							</li>
 							<li>
 								<a href="#menu" className="btn_cat_mob">
-									<div className="hamburger hamburger--spin" id="hamburger">
+									{/* <div className="hamburger hamburger--spin" id="hamburger">
 										<div className="hamburger-box">
 											<div className="hamburger-inner"></div>
 										</div>
-									</div>
+									</div> */}
 									Categories
 								</a>
 							</li>
@@ -232,7 +243,7 @@ const Header = props => {
 			</div>
 			<div className="search_mob_wp">
 				<input type="text" className="form-control" value={search_string} placeholder="Search over 10.000 products" onChange={e => update_search_string(e.target.value)}/>
-				<a href={`/products?${new URLSearchParams({search: search_string}).toString()}`} type="submit" className="btn_1 full-width" value="Search"/>
+				<Link to={`/products?${new URLSearchParams({search: search_string}).toString()}`} type="submit" className="btn_1 full-width"> Search </Link>
 			</div>
 			{/* <!-- /search_mobile --> */}
 		</div>

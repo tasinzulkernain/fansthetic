@@ -2,12 +2,13 @@ import { createLogic } from 'redux-logic';
 import { update_cart, update_cart_failure, add_to_cart, update_cart_success } from '../cart_slice';
 import api from '../../../../api'
 import _, { update } from 'lodash'
+import { show_alert } from '../../commands/commands_slice';
 
 const addToCartLogic = createLogic({
     type: add_to_cart,
     // latest: true,
 
-    async process({ action }, dispatch) {
+    async process({ action }, dispatch, done) {
         try {
             const d = await api.get('/products/cart')
             const quantity = parseInt( action.payload.quantity );
@@ -22,9 +23,11 @@ const addToCartLogic = createLogic({
             if(!found) new_products.push(action.payload);
             console.log(new_products);
             dispatch( update_cart( new_products ) );
+            dispatch( show_alert( {text: `product added to cart`} ) )
         }catch (e) {
             dispatch( update_cart_failure({error: e}) )
         }
+        done();
     }
 })
 

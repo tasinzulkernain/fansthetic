@@ -48,7 +48,9 @@
 }
 
 .products_carousel {
-	max-width: max-content;
+	.item {
+		max-width: max-content;
+	}
 	figure {
 		// max-width: max-content;
 		background-color: #fff !important;

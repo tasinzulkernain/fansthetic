@@ -30,7 +30,7 @@ const CartItem = props => {
                 <span className="item_cart">{product.product__title}</span>
             </td>
             <td>
-                <strong>${product.product__price}</strong>
+                <strong>&#2547;{product.product__price}</strong>
             </td>
             <td>
                 <div className="numbers-row">
@@ -40,7 +40,7 @@ const CartItem = props => {
                 </div>
             </td>
             <td>
-                <strong>${product.product__price * product.quantity}</strong>
+                <strong>&#2547;{product.product__price * product.quantity}</strong>
             </td>
             <td className="options">
                 <a href="#" onClick={ () => remove_from_cart(product.product_id) }><i className="ti-trash" /></a>

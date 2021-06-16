@@ -1,34 +1,50 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { load_scripts } from '../state/slices/pages/checkout/checkout_slice'
+import { clear_order_status, load_scripts, place_order } from '../state/slices/pages/checkout/checkout_slice'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import "../styles/checkout.scss"
-
+import * as yup from 'yup';
+import { useHistory } from 'react-router-dom';
+import { show_alert } from '../state/slices/commands/commands_slice';
 
 const mapStateToProps = state => {
     return {
         cart: state.cart,
-        loaded_scripts: state.pages.checkout.loaded_scripts
+        loaded_scripts: state.pages.checkout.loaded_scripts,
+        status: state.pages.checkout.status
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         load_scripts: () => dispatch(load_scripts("checkout", "default")),
+        place_order: values => dispatch( place_order(values) ),
+        show_alert: text => dispatch( show_alert( {text} ) ),
+        clear_order_status: () => dispatch( clear_order_status() )
     }
 }
 
 const Checkout = props => {
-    const { loaded_scripts, load_scripts, cart } = props;
+    const { loaded_scripts, load_scripts, cart, place_order, status, show_alert, clear_order_status } = props;
+    const history = useHistory();
 
     useEffect( () => {
         load_scripts("default");
     }, [] )
 
     useEffect( () => {
+        if(status == "SUCCESS") {
+            history.push('/order/confirm')
+        }else if(status == "FAILURE") {
+            show_alert( "Couldn't place order :(" )
+            clear_order_status();
+        }
+    }, [status] )
+
+    useEffect( () => {
         Promise.all(loaded_scripts.map( async script_src => {
-            console.log(document.querySelector(`script[src="${script_src}"]`), script_src);
-            if(!document.querySelector(`script[src="${script_src}"]`)) {
+            console.log(document.querySelector(`script[src="&#2547;{script_src}"]`), script_src);
+            if(!document.querySelector(`script[src="&#2547;{script_src}"]`)) {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 const script_elem = document.createElement('script');
                 script_elem.src = script_src;
@@ -38,6 +54,16 @@ const Checkout = props => {
             }  
         } ))
     }, [loaded_scripts])
+
+
+    const schema = yup.object().shape({
+        shipping_address: yup.object().shape({
+            street: yup.string().required('required field'),
+            city: yup.string().required('required field'),
+            division: yup.string().required('required field'),
+            mobile_no: yup.string().required('required field'),
+        })
+    });
 
     return (
         <main className="bg_gray">
@@ -73,6 +99,8 @@ const Checkout = props => {
                         },
                         "name": "",
                         "contact_no": "",
+                        "payment_method": "cash_on_delivery",
+
                         // "delivery_charge": 0,
                         // "special_note": "string",
                         // "discount": 0,
@@ -80,18 +108,13 @@ const Checkout = props => {
                         // "paid_amount": 0,
                         // "remaining_amount": 0,
                     }}
-                    // validate={values => {
-                    //     const errors = {};
-                    //     if (!values.email) {
-                    //         errors.email = 'Required';
-                    //     } else if (
-                    //         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                    //     ) {
-                    //         errors.email = 'Invalid email address';
+                    // validate={ (values,errors) => {
+                    //     if(!values.city) {
+                    //         errors.city = "Required"
                     //     }
-                    //     console.log("errors", errors);
                     //     return errors;
                     // }}
+                    validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
                         // setTimeout(() => {
                         //     alert(JSON.stringify(values, null, 2));
@@ -99,6 +122,7 @@ const Checkout = props => {
                         // }, 400);
                         console.log("came");
                         console.log(values);
+                        place_order(values);
                         setSubmitting(false);
                     }}
                 >
@@ -113,6 +137,7 @@ const Checkout = props => {
                     }) => (
                 <Form>
                 <div className="row">
+                    {/* {JSON.stringify(errors)} */}
                     <div className="col-lg-4 col-md-6">
                         <div className="step first">
                             <h3>1. User Info and Billing address</h3>
@@ -139,55 +164,57 @@ const Checkout = props => {
                                     </div>
                                     <div className="form-group">
                                         <Field type="text" className="form-control" placeholder="Mobile number" name="shipping_address.mobile_no" />
+                                        <ErrorMessage name="shipping_address.mobile_no" />
                                     </div>
                                     <div className="form-group">
-                                        <Field type="text" className="form-control" placeholder="Street number"  name="shipping_address.street"/>
+                                        <Field type="text" className="form-control" placeholder="Address"  name="shipping_address.street"/>
+                                        <ErrorMessage name="shipping_address.street" />
                                     </div>
                                     <div className="row no-gutters">
                                         <div className="col-6 form-group pr-1">
                                             <Field type="text" className="form-control" placeholder="City"  name="shipping_address.city"/>
+                                            <ErrorMessage name="shipping_address.city" />
                                         </div>
                                         <div className="col-6 form-group pl-1">
-                                            <Field type="text" className="form-control" placeholder="Zip code"  name="shipping_address.zipcode"/>
+                                            <Field type="text" className="form-control" placeholder="Division"  name="shipping_address.division"/>
+                                            <ErrorMessage name="shipping_address.division" />
                                         </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <Field type="text" className="form-control" placeholder="Division" name="shipping_address.division"/>
                                     </div>
                                     {/* /row */}
                                     <hr />
-                                    <div className="form-group">
+                                    {/* <div className="form-group">
                                         <label className="container_check" id="other_addr">Billing address same as shipping address
                                             <input type="checkbox" defaultChecked="true" name="billing_same"/>
                                             <span className="checkmark" />
                                         </label>
                                     </div>
                                     <div id="other_addr_c" className="pt-2">
-                                        {/* /row */}
                                         <div className="form-group">
                                             <Field type="text" className="form-control" placeholder="Name" name="billing_address.name"/>
                                         </div>
                                         <div className="form-group">
                                             <Field type="text" className="form-control" placeholder="Mobile number" name="billing_address.mobile_no" />
+                                            <ErrorMessage name="billin_address.mobile_no." />
                                         </div>
                                         <div className="form-group">
-                                            <Field type="text" className="form-control" placeholder="Street" name="billing_address.street" />
+                                            <Field type="text" className="form-control" placeholder="Address" name="billing_address.street" />
+                                            <ErrorMessage name="billin_address.street" />
                                         </div>
                                         <div className="row no-gutters">
                                             <div className="col-6 form-group pr-1">
                                                 <Field type="text" className="form-control" placeholder="City"  name="billing_address.city"/>
+                                                <ErrorMessage name="billin_address.city" />
                                             </div>
                                             <div className="col-6 form-group pl-1">
-                                                <Field type="text" className="form-control" placeholder="Zip code"  name="billing_address.zipcode"/>
+                                                <Field type="text" className="form-control" placeholder="Division"  name="billing_address.zipcode"/>
+                                                <ErrorMessage name="shipping_address.division" />
                                             </div>
                                         </div>
                                         <div className="form-group">
                                             <Field type="text" className="form-control" placeholder="Division" name="billing_address.division" />
                                         </div>
-                                        {/* /row */}
                                     </div>
-                                    {/* /other_addr_c */}
-                                    <hr />
+                                    <hr /> */}
                                 </div>
                                 {/* /tab_1 */}
                                 {/* <div className="tab-pane fade" id="tab_2" role="tabpanel" aria-labelledby="tab_2">
@@ -228,42 +255,8 @@ const Checkout = props => {
                             <h3>2. Payment and Shipping</h3>
                             <ul>
                                 <li>
-                                    <label className="container_radio">Credit Card<a href="#0" className="info" data-toggle="modal" data-target="#payments_method" />
-                                        <input type="radio" name="payment" defaultChecked />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="container_radio">Paypal<a href="#0" className="info" data-toggle="modal" data-target="#payments_method" />
-                                        <input type="radio" name="payment" />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
-                                <li>
                                     <label className="container_radio">Cash on delivery<a href="#0" className="info" data-toggle="modal" data-target="#payments_method" />
-                                        <input type="radio" name="payment" />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="container_radio">Bank Transfer<a href="#0" className="info" data-toggle="modal" data-target="#payments_method" />
-                                        <input type="radio" name="payment" />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
-                            </ul>
-                            {/* <div className="payment_info d-none d-sm-block"><figure><img src="img/cards_all.svg" alt /></figure>	<p>Sensibus reformidans interpretaris sit ne, nec errem nostrum et, te nec meliore philosophia. At vix quidam periculis. Solet tritani ad pri, no iisque definitiones sea.</p></div> */}
-                            <h6 className="pb-2">Shipping Method</h6>
-                            <ul>
-                                <li>
-                                    <label className="container_radio">Standard shipping<a href="#0" className="info" data-toggle="modal" data-target="#payments_method" />
-                                        <input type="radio" name="shipping" defaultChecked />
-                                        <span className="checkmark" />
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="container_radio">Express shipping<a href="#0" className="info" data-toggle="modal" data-target="#payments_method" />
-                                        <input type="radio" name="shipping" />
+                                        <Field type="radio" name="payment_method" value="cash_on_delivery" defaultChecked />
                                         <span className="checkmark" />
                                     </label>
                                 </li>
@@ -277,14 +270,18 @@ const Checkout = props => {
                             <div className="box_general summary">
                                 <ul>
                                     {cart.products.map( product => (
-                                        <li className="clearfix"><em>{product.product__title}</em>  <span>${product.product__price}</span></li>
+                                        <li className="clearfix"><em>{product.product__title}</em>  <span>&#2547;{product.product__price}</span></li>
                                     ) )}
                                 </ul>
                                 <ul>
-                                    <li className="clearfix"><em><strong>Subtotal</strong></em>  <span>${cart.total_amount}</span></li>
-                                    <li className="clearfix"><em><strong>Shipping</strong></em> <span>$0</span></li>
+                                    <li className="clearfix"><em><strong>Subtotal</strong></em>  <span>&#2547;{cart.total_amount}</span></li>
+                                    <li className="clearfix"><em><strong>Shipping</strong></em> <span>&#2547;0</span></li>
                                 </ul>
-                                <div className="total clearfix">TOTAL <span>${cart.total_amount}</span></div>
+                                <ul className="input-group">
+                                    <Field className="form-control mr-4 rounded flex-grow" type="text" name="prmo_code" />  
+                                    <span><button type="button" className="form-control btn_1 px-3 " >Apply promo </button></span>
+                                </ul>
+                                <div className="total clearfix">TOTAL <span>&#2547;{cart.total_amount}</span></div>
                                 {/* <div className="form-group">
                                     <label className="container_check">Register to the Newsletter.
                                         <input type="checkbox" defaultChecked />
@@ -292,7 +289,7 @@ const Checkout = props => {
                                     </label>
                                 </div> */}
                                 <button type="submit" className="btn_1 full-width">
-                                    Checkout and pay
+                                    Place an order
                                 </button>
                             </div>
                             {/* /box_general */}

@@ -3,6 +3,7 @@ import '../styles/error_track.scss'
 import '../styles/product_page.scss'
 import trucklogo from "../img/track_order.svg"
 import { Link, useHistory, withRouter } from 'react-router-dom';
+import Product from '../components/Global/Product';
 
 import { fetch_product, fetch_product_failure } from '../state/slices/pages/product/product_slice';
 
@@ -59,12 +60,6 @@ const Orders = props => {
         history.push("/orders?order_id="+document.querySelector('#invoice_id').value);
         fetch_order(parseInt( document.querySelector('#invoice_id').value));
     }
-
-    useEffect( () => {
-        if(status !== "LOADING") {
-            // load_scripts()
-        }
-    }, [status] )
 
     return (
         <main>
@@ -289,8 +284,13 @@ const Orders = props => {
                                     <span>orders</span>
                                     <p></p>
                                 </div>
-                                <div className="products_carousel">
-                                    {orders.map( order => (
+                                {/* <div className="products_carousel"> */}
+                                    <div className="row small-gutters">
+                                        {orders.map( order =>
+                                            <Product fromOrders product={{id: order.track_id, thumbnail: trucklogo, title: order.name, price: order.grand_total}} fromHome/>
+                                        )}
+                                    </div>
+                                    {/* {orders.map( order => (
                                         <div class="item">
                                             <div class="grid_item">
                                                 <figure>
@@ -306,11 +306,8 @@ const Orders = props => {
                                                 </div>
                                             </div>
                                             {/* <!-- /grid_item --> */}
-                                        </div>
-                                     ) )}
                                     {/* /item */}
                                     {/* /item */}
-                                </div>
                                 {/* /products_carousel */}
                             </div>
                             {/* /container */}

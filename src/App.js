@@ -6,6 +6,7 @@ import { connect, Provider } from 'react-redux'
 import Cookies from 'js-cookie';
 import forge from 'node-forge'
 import api from './api'
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import { script_loaded } from './state/slices/scripts/scripts_slice';
 import { fatal_error } from './state/slices/errors/errors';
@@ -24,7 +25,10 @@ import Wishlist from './pages/wishlist';
 import Profile from './pages/profile'
 import NotFound from './pages/not_found';
 
+import { show_alert, show_alert_done } from './state/slices/commands/commands_slice'
+
 import { createBrowserHistory, createHashHistory } from 'history';
+import OrderConfirm from './pages/order_confirm';
 
 const mapStateToProps = state => {
     return {
@@ -40,7 +44,9 @@ const mapDispatchToProps = dispatch => {
         script_loaded: script => dispatch( script_loaded(script) ),
         fatal_error: (error_string, error) => dispatch( fatal_error({error_string, error}) ),
         logout: () => dispatch( logout() ),
-        login: (username, password) => dispatch( login( {username, password} ) )
+        login: (username, password) => dispatch( login( {username, password} ) ),
+        show_alert_done: () => dispatch( show_alert_done() ),
+        show_alert: text => dispatch( show_alert( {text} ) )
     }
 }
 
@@ -53,13 +59,14 @@ function PrivateRoute({ children, ...rest }) {
         <Route
             {...rest}
             render={() => {
-                console.log(auth);
+                console.log("auth ", auth);
+                if(!auth.logged_in) show_alert( "you need to be logged in");
                 return (
-                    auth.logged_in !== undefined ? (
+                    auth.logged_in ? (
                         children
                     ) : (
-                        <></>
-                        // <Redirect to="/account" />
+                        // <></>
+                        <Redirect to="/account?no_auth_redirect=1" />
                     )
                 )
             }}
@@ -70,7 +77,9 @@ function PrivateRoute({ children, ...rest }) {
 const history = createBrowserHistory();
 
 const App = props => {
-    const { to_load_scripts, script_loaded, auth, fatal_error, login, logout, commands } = props;
+    const { to_load_scripts, script_loaded, auth, fatal_error, login, logout, commands, show_alert } = props;
+
+    
 
     useEffect(() => {
         Promise.all(to_load_scripts.map(async script_src => {
@@ -87,7 +96,20 @@ const App = props => {
             script_loaded(script_src);
         }))
 
-    }, [to_load_scripts])
+    }, [to_load_scripts]);
+
+    useEffect( () => {
+        // if(commands.alert_item.text === "initial"){
+        //     return;
+        // } 
+        const container = document.querySelector('.alert-container');
+        container.classList.add('alert-active');
+        container.querySelector('span').textContent = commands.alert_item.text;
+        setTimeout( () => {
+            document.querySelector('.alert-container').classList.remove('alert-active');
+            show_alert_done();
+        }, commands.alert_item.timeout );
+    }, [commands.alert_item] )
 
     useEffect( () => {
         const auth_header = Cookies.get("Authorization");
@@ -99,24 +121,11 @@ const App = props => {
     }, [] )
 
 
-    // useEffect( () => {
-    //     if(commands.re_initalize) {
-    //         window.location.reload();
-    //     }
-    // }, [commands] )
-
-
-    api.interceptors.request.use( config => {
-        config.headers['Authorization'] = Cookies.get("Authorization");
-        return config;
-    }, error => {
-        fatal_error("couldn't attach/remove auth credentials to request", error);
-    } )
-
-    // window.api = api;
-
     return (
         <div className="App">
+            <div className="alert-primary alert-container alert-active" >
+                <span className="" >Product addedd to cart</span>
+            </div>
             <authContext.Provider value={{logged_in: Cookies.get('Authorization') !== undefined}}>
             
             <Router history={history} >
@@ -143,9 +152,12 @@ const App = props => {
                     <Route path="/account">
                         <Account />
                     </Route>
-                    <Route path="/orders">
+                    <PrivateRoute path="/order/confirm" exact>
+                        <OrderConfirm />
+                    </PrivateRoute>
+                    <PrivateRoute path="/orders">
                         <Orders />
-                    </Route>
+                    </PrivateRoute>
                     <PrivateRoute path="/wishlist">
                         <Wishlist />
                     </PrivateRoute>
@@ -160,6 +172,13 @@ const App = props => {
                 <div id="toTop"></div>
             </ Router>
             </authContext.Provider>
+            
+            {/* <div>
+                <MessengerCustomerChat
+                    pageId="1493331417562328"
+                    appId="846143616299880"
+                />
+            </div> */}
         </div>
     );
 }

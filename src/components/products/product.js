@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { add_to_cart, remove_from_cart } from '../../state/slices/cart/cart_slice'
 import { add_to_wishlist } from '../../state/slices/wishlist/wishlist_slice';
 
+
 const mapDispatchToProps = dispatch => {
     return {
         add_to_cart: product_id => dispatch( add_to_cart({product_id: product_id, quantity: 1}) ),
@@ -21,11 +22,11 @@ const Product = props => {
                 :   <span className={`ribbon hot`}>New</span>
                 }
                 <figure>
-                    <a href={`/product/?product_id=${[product.id]}`}>
+                    <Link to={`/product/?product_id=${[product.id]}`}>
                         <div className="d-flex flex-column justify-content-center">
                             <img class="img-fluid lazy center-block" src={product.thumbnail} data-src={product.thumbnail} alt=""/>
                         </div>
-                    </a>
+                    </Link>
                     {/* <div data-countdown="2019/05/15" class="countdown"></div> */}
                 </figure>
                 <a href="product-detail-1.html">
@@ -36,9 +37,9 @@ const Product = props => {
                     {/* <span class="old_price">$60.00</span> */}
                 </div>
                 <ul>
-                    <li><a href="#0" onClick={ () => add_to_wishlist(product.id) } class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to Wishlist"><i class="ti-heart"></i><span>Add to Wishlist</span></a></li>
+                    <li><a to="#0" onClick={ () => add_to_wishlist(product.id) } class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to Wishlist"><i class="ti-heart"></i><span>Add to Wishlist</span></a></li>
                     {/* <li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li> */}
-                    <li><a href="#0" onClick={() => add_to_cart(product.id)} class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+                    <li><a to="#0" onClick={() => add_to_cart(product.id)} class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
                 </ul>
             </div>
         </div>

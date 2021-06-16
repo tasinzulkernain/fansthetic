@@ -1,4 +1,6 @@
 import { setup } from 'axios-cache-adapter'
+import Cookies from 'js-cookie';
+import { fatal_error } from './state/slices/errors/errors';
 
 const api = setup({
     baseURL: "https://fansthetic.com/api/v1/",
@@ -9,7 +11,8 @@ const api = setup({
     // },
     headers: {
         "accept": "application/json",
-        "Content-Type": "application/json" 
+        "Content-Type": "application/json" ,
+        "Authorization": Cookies.get('Authorization')
     },
 
     // `axios-cache-adapter` options
@@ -23,6 +26,15 @@ const api = setup({
         }
     },
 
+    jar: true
 })
+
+api.interceptors.request.use( config => {
+    console.log("Authorization - ", document.cookie);
+    config.headers['Authorization'] = Cookies.get("Authorization");
+    return config;
+}, error => {
+    fatal_error("couldn't attach/remove auth credentials to request", error);
+} )
 
 export default api;

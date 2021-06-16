@@ -24,7 +24,7 @@ const orders_slice = createSlice({
             state.error = action.payload.error;
         },
         "fetch_order": (state) => {
-            // state.status = "LOADING";
+            state.status = "ORDER_LOADING";
         },
         "fetch_order_success": (state, action) => {
             state.status = "SUCCESS";

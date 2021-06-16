@@ -29,7 +29,7 @@ const scripts = {
 
 const load_scripts_reducer = (state, action) => {
     const { page, comp } = action.payload;
-    console.log("STATEA", scripts[page][comp]);
+    // console.log("STATEA", scripts[page][comp]);
     state.to_load_scripts.push(scripts[page][comp]);
 }
 

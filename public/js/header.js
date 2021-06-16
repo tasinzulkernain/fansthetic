@@ -51,10 +51,13 @@
         navbar: {
             title: 'MENU'
         },
+        onclick: {
+            close: true
+        },
         offCanvas: {
-        pageSelector: "#page"
-    },
-        navbars: [{position:'bottom',content: ['<a href="#0">© 2020 Allaia</a>']}]}, 
+            pageSelector: "#page"
+        },
+        navbars: [{position:'bottom',content: ['<a href="/">© 2021 Fansthetic</a>']}]}, 
         {
         // configuration
         clone: true,
@@ -66,20 +69,32 @@
     });
 
     // Menu
+    $('a.open_close').unbind();
     $('a.open_close').on("click", function () {
         $('.main-menu').toggleClass('show');
         $('.layer').toggleClass('layer-is-visible');
     });
+    $('a.show-submenu').unbind();
     $('a.show-submenu').on("click", function () {
         $(this).next().toggleClass("show_normal");
     });
+    
+    $('a.show-submenu').unbind();
     $('a.show-submenu-mega').on("click", function () {
         $(this).next().toggleClass("show_mega");
     });
 
+    $('a.btn_search_mob').unbind();
     $('a.btn_search_mob').on("click", function () {
         $('.search_mob_wp').slideToggle("fast");
     });
+
+    $('.header-menu > a').unbind();
+    $('.header-menu > a').on('click', function () {
+        console.log("cli8cked");
+        $('.main-menu').removeClass('show');   
+        $('.layer').removeClass('layer-is-visible');
+    })
 
     /* Cart dropdown */
 	$('.dropdown-cart, .dropdown-access').hover(function () {

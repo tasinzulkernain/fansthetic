@@ -1,9 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import update_filters_obj from './reducers/update_filters'
-import update_products_obj from './reducers/update_products'
-import update_products_api_status_obj from './reducers/update_products_api_status'
-
 import _ from 'lodash'
 
 const initialState = {
@@ -13,32 +9,38 @@ const initialState = {
         price_range: {
             min: 0,
             max: 999999999
-        }
+        },
+        search: "",
+        page: 0
     },
+    page: 0,
     loaded_scripts: [],
-    products_api_status: "PROCESSING"
-}
-
-const scripts = {
-    "default": ["/js/main.js"],
-    "sidebar": ["/js/sticky_sidebar.min.js"],
-    "products_list": ["/js/specific_listing.js"]
+    status: "PROCESSING"
 }
 
 const products_slice = createSlice({
     name: "products",
     initialState,
     reducers: {
-        "update_filters": update_filters_obj,
-        "update_products": update_products_obj,
-        "update_products_api_status": update_products_api_status_obj,
-        // "load_scripts": (state, action) => {
-        //     state.loaded_scripts = _.union(state.loaded_scripts, scripts[action.payload])
-        // }
+        update_filters: (state,action) => {
+            state.filters = action.payload
+        },
+        update_products: state => {
+            state.status = "PROCESSING"
+        },
+        update_products_success: (state,action) => {
+            state.status = "SUCCESS"
+            state.products = action.payload.products;
+            state.page = action.payload.page;
+            state.next = action.payload.next;
+        },
+        update_products_failure: (state,action) => {
+            state.status = "FAILURE";
+            state.error = action.payload.error;
+        }
     },
 }) 
 
-products_slice.initialState = initialState;
 
 export default products_slice;
-export const { update_filters, update_products, update_products_api_status } = products_slice.actions;
+export const { update_filters, update_products, update_products_success, update_products_failure } = products_slice.actions;

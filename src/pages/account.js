@@ -4,10 +4,12 @@ import '../styles/account.scss';
 import { Formik, Form, Field } from 'formik';
 import { connect } from 'react-redux';
 import { useAlert } from 'react-alert';
+import qs from 'query-string'
 
 import { login, signup, reset_password_initiate, reset_password_confirm } from '../state/slices/auth/auth_slice'
 import { load_scripts } from '../state/slices/scripts/scripts_slice';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { show_alert } from '../state/slices/commands/commands_slice';
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -15,7 +17,8 @@ const mapDispatchToProps = dispatch => {
         reset_password_confirm: (values) => dispatch( reset_password_confirm(values) ), 
         login: (username, password) => dispatch( login({username, password, redirect:true}) ),
         signup: values => dispatch( signup(values) ),
-        load_scripts: () => dispatch( load_scripts("account", "default") )
+        load_scripts: () => dispatch( load_scripts("account", "default") ),
+        show_alert: text => dispatch( show_alert( {text} ) )
     }
 }
 
@@ -27,12 +30,17 @@ const mapStateToProps = state => {
 }
 
 const Account = props => {
-    const { login, signup, status, statusText, load_scripts, reset_password_confirm, reset_password_initiate } = props;
+    const { login, signup, status, statusText, load_scripts, reset_password_confirm, reset_password_initiate, show_alert } = props;
     const history = useHistory();
+    const location = useLocation();
 
     useEffect( () => {
         load_scripts();
         window.hs = history;
+        const qparams = qs.parse(location.search)
+        if(qparams.no_auth_redirect) {
+            show_alert("You need to be logged in");
+        }
     }, [] )
     
 

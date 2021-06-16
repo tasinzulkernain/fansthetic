@@ -9,10 +9,12 @@ import { test_val } from '../state/slices/test/test'
 
 import qs from 'query-string' 
 import { useLocation } from 'react-router';
+import Loading from '../components/Global/loading';
 
 const mapStateToProps = state => {
     return {
         // loading: state.pages.products.loading,
+        status: state.pages.products.status,
         filters: state.pages.products.filters,
         products: state.pages.products.products,
     };
@@ -28,7 +30,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const Products = props => {
-    const { products, load_scripts, filters, update_filters } = props
+    const { products, load_scripts, filters, update_filters, status } = props
     const location = useLocation()
 
     // useEffect( () => {
@@ -45,7 +47,8 @@ const Products = props => {
         update_filters({
             ...filters,
             category: qparams.category ? qparams.category : "",
-            search: qparams.search ? qparams.search : ""
+            search: qparams.search ? qparams.search : "",
+            page: qparams.page ? qparams.page : "0"
         })
         
         console.log(qparams);
@@ -63,14 +66,16 @@ const Products = props => {
     
 
     return (
-        <div className="container margin_30">
-            <div className="row">
-                <Siderbar price />
-	            <div class="col-lg-9">
-                    <List products={products} />
-                </div>
+        status === "PROCESSING" ? 
+            <Loading />
+        :   <div className="container margin_30">
+                <div className="row">
+                    <Siderbar price />
+                    <div class="col-lg-9">
+                        <List products={products} />
+                    </div>
+                </div> 
             </div>
-        </div>
     )
 }
 

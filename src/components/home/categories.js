@@ -9,7 +9,7 @@ const Banners = props => {
 
     return (
         <ul id="banners_grid" className="clearfix">
-            {typeof categories === "object" && categories.slice(0,3).map( cat => 
+            {typeof categories === "object" && categories.slice(0,6).map( cat => 
                 <li>
                     <a href={`/products?category=${cat.title}`} className="img_container">
                     <img src={cat.thumbnail} data-src={cat.thumbnail} alt={cat.alt} />

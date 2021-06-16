@@ -7,6 +7,8 @@ import statics_slice from './slices/statics/statics_slice'
 import scripts_slice from "./slices/scripts/scripts_slice";
 import auth_slice from "./slices/auth/auth_slice";
 import wishlist_slice from "./slices/wishlist/wishlist_slice";
+import profile_slice from "./slices/profile/profile_slice";
+import commands_slice from "./slices/commands/commands_slice";
 
 import pages_reducer from './slices/pages/pages_reducer'
 
@@ -21,7 +23,7 @@ import homeLogic from "./slices/pages/home/logic"
 import orderLogic from "./slices/pages/orders/logic"
 import wishlistLogic from "./slices/wishlist/logic"
 import profileLogic from "./slices/profile/logics"
-import profile_slice from "./slices/profile/profile_slice";
+import placeOrderLogic from "./slices/pages/checkout/logics";
 
 
 const logics = [
@@ -33,7 +35,8 @@ const logics = [
     ...homeLogic,
     ...orderLogic,
     ...wishlistLogic,
-    ...profileLogic
+    ...profileLogic,
+    ...placeOrderLogic
 ]
 
 console.log("logics ", logics);
@@ -58,6 +61,7 @@ const store = configureStore({
         "errors": errors_slice.reducer,
         "wishlist": wishlist_slice.reducer,
         "profile": profile_slice.reducer,
+        "commands": commands_slice.reducer
     }),
     devTools: true,
 });

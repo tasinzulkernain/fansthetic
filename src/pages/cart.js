@@ -98,7 +98,7 @@ const Cart = props => {
                                     <span>Shipping</span> $7.00
                                 </li> */}
                                 <li>
-                                    <span>Total</span> ${total_amount}
+                                    <span>Total</span> &#2547;{total_amount}
                                 </li>
                             </ul>
                             <Link to="/checkout" className="btn_1 full-width cart">Proceed to Checkout</Link>
