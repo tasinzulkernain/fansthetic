@@ -6,7 +6,7 @@ import { connect, Provider } from 'react-redux'
 import Cookies from 'js-cookie';
 import forge from 'node-forge'
 import api from './api'
-import MessengerCustomerChat from 'react-messenger-customer-chat';
+// import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import { script_loaded } from './state/slices/scripts/scripts_slice';
 import { fatal_error } from './state/slices/errors/errors';
