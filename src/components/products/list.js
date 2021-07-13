@@ -38,7 +38,7 @@ const List = props => {
 
     return (
         <>
-            <div class="row small-gutters">
+            <div class="row small-gutters grid grid-rows-2">
                 {products.length == 0 ? <h1 style={{height: '80vh'}} className="d-flex justify-content-center w-100 wt-100 mt-5"  >No products found :( </h1> : <></>} 
                 {products.map( product => {
                     return (

@@ -11,11 +11,12 @@ const initialState = {
             max: 999999999
         },
         search: "",
-        page: 0
+        page: 0,
+        products_per_page: 10,
     },
     page: 0,
     loaded_scripts: [],
-    status: "PROCESSING"
+    status: "PROCESSING",
 }
 
 const products_slice = createSlice({

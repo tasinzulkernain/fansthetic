@@ -8,7 +8,7 @@ const updateProductsLogic = createLogic({
     // latest: true,
 
     async process({ getState, action }, dispatch, done) {
-        const { category, price_range, search, page } = action.payload.filters;
+        const { category, price_range, search, page, products_per_page } = action.payload.filters;
 
         const params = {}
         if(search) {
@@ -21,9 +21,10 @@ const updateProductsLogic = createLogic({
         if(category) {
             params.category__title = category 
         }
+        console.log(products_per_page)
         if(page) {
-            params.limit = 1;
-            params.offset = 1*page;
+            params.limit = products_per_page;
+            params.offset = products_per_page*page;
         }
 
         try {
