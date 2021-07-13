@@ -74,7 +74,7 @@ function PrivateRoute({ children, ...rest }) {
     );
 }
 
-const history = createBrowserHistory();
+const history = createHashHistory();
 
 const App = props => {
     const { to_load_scripts, script_loaded, auth, fatal_error, login, logout, commands, show_alert } = props;
