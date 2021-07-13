@@ -21,7 +21,7 @@ const updateProductsLogic = createLogic({
         if(category) {
             params.category__title = category 
         }
-        console.log(products_per_page)
+        console.log(products_per_page  )
         if(page) {
             params.limit = products_per_page;
             params.offset = products_per_page*page;
