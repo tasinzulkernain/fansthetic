@@ -3,6 +3,7 @@ import facebook_icon from '../../img/facebook_icon.svg'
 import cards_all from '../../img/cards_all.svg'
 import insta_icon from '../../img/instagram_icon.svg'
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const mapStateToProps = state => {
     return {
@@ -22,7 +23,7 @@ const Footer = props => {
                     <div className="collapse dont-collapse-sm links" id="collapse_1">
                     <ul>
                         <li><a href="about.html">About us</a></li>
-                        <li><a href="account.html">My account</a></li>
+                        <li><Link to="/profile">My account</Link></li>
                         <li><a href="contacts.html">Contacts</a></li>
                     </ul>
                     </div>

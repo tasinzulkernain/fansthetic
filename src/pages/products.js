@@ -73,6 +73,14 @@ const Products = props => {
                 <div className="row">
                     <Siderbar price />
                     <div class="col-lg-9">
+                        <div style={{display: 'flex', 'justify-content': 'flex-end', padding: '1rem'}}>
+                            <span style={{'paddingRight': '1rem'}}>products per page</span>
+                            <select onChange={e => update_filters({...filters, products_per_page: e.target.value})} value={filters.products_per_page}>
+                                <option>5</option>
+                                <option>10</option>
+                                <option>20</option>
+                            </select>
+                        </div>
                         <List products={products} next={next}/>
                     </div>
                 </div> 
