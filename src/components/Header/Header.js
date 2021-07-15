@@ -161,7 +161,7 @@ const Header = props => {
 						<div className="custom-search-input">
 							<input type="text" placeholder="Search over 500 products" value={search_string} onChange={e => update_search_string(e.target.value)} onKeyUp={ handleKeyUp }/>
 							<button type="submit">
-								<Link id="search_button" href={`/products?${new URLSearchParams({search: search_string}).toString()}`} >
+								<Link id="search_button" to={`/products?${new URLSearchParams({search: search_string}).toString()}`} >
 									<i className="header-icon_search_custom"/>
 								</Link>
 							</button>
