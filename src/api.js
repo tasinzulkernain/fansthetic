@@ -21,7 +21,8 @@ const api = setup({
         exclude: { 
             query: false, 
             paths: [
-                /\/products\/cart/
+                /\/products\/cart/,
+                /\/products\/wishlist/,
             ],
         }
     },

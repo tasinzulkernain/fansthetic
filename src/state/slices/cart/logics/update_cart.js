@@ -9,7 +9,7 @@ const updateCartLogic = createLogic({
     async process({ action }, dispatch) {
         try {
             console.log("update cart ", action.payload);
-            const d = await api.put('/products/cart', {
+            const d = await api.put('/products/cart/', {
                 "products": action.payload 
             })
             dispatch( update_cart_success(d.data.response.cart) );

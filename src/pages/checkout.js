@@ -218,8 +218,8 @@ const Checkout = props => {
                                 </div>
                                 {/* /tab_1 */}
                                 {/* <div className="tab-pane fade" id="tab_2" role="tabpanel" aria-labelledby="tab_2">
-                                    <a href="#0" className="social_bt facebook">Login con Facebook</a>
-                                    <a href="#0" className="social_bt google">Login con Google</a>
+                                    <a style={{cursor:'pointer'}}  className="social_bt facebook">Login con Facebook</a>
+                                    <a style={{cursor:'pointer'}}  className="social_bt google">Login con Google</a>
                                     <div className="form-group">
                                         <Field type="email" className="form-control" placeholder="Email" />
                                     </div>
@@ -233,7 +233,7 @@ const Checkout = props => {
                                                 <span className="checkmark" />
                                             </label>
                                         </div>
-                                        <div className="float-right"><a id="forgot" href="#0">Lost Password?</a></div>
+                                        <div className="float-right"><a id="forgot" style={{cursor:'pointer'}} >Lost Password?</a></div>
                                     </div>
                                     <div id="forgot_pw">
                                         <div className="form-group">
@@ -255,7 +255,7 @@ const Checkout = props => {
                             <h3>2. Payment and Shipping</h3>
                             <ul>
                                 <li>
-                                    <label className="container_radio">Cash on delivery<a href="#0" className="info" data-toggle="modal" data-target="#payments_method" />
+                                    <label className="container_radio">Cash on delivery<a style={{cursor:'pointer'}}  className="info" data-toggle="modal" data-target="#payments_method" />
                                         <Field type="radio" name="payment_method" value="cash_on_delivery" defaultChecked />
                                         <span className="checkmark" />
                                     </label>

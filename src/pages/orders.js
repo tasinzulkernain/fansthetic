@@ -177,7 +177,7 @@ const Orders = props => {
                                                                 </div>
                                                         </div>
                                                         {/* <div className="col-lg-5 col-md-6">
-                                                            <div className="btn_add_to_cart"><a href="#0" className="btn_1">Update Order</a></div>
+                                                            <div className="btn_add_to_cart"><a style={{cursor:'pointer'}}  className="btn_1">Update Order</a></div>
                                                         </div> */}
                                                     </div>
                                                 </div>
@@ -264,7 +264,7 @@ const Orders = props => {
 
                                             {/* <div className="mt-5  row justify-content-center">
                                                 <div className="col-lg-5 col-md-6">
-                                                    <div className="btn_add_to_cart"><a href="#0" className="btn_1">Update Order</a></div>
+                                                    <div className="btn_add_to_cart"><a style={{cursor:'pointer'}}  className="btn_1">Update Order</a></div>
                                                 </div>
                                             </div> */}
                                         </div>

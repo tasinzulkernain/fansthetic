@@ -10,7 +10,7 @@ const addToCartLogic = createLogic({
 
     async process({ action }, dispatch, done) {
         try {
-            const d = await api.get('/products/cart')
+            const d = await api.get('/products/cart/')
             const quantity = parseInt( action.payload.quantity );
             console.log(d.data.response.cart.products);
             let found = false;

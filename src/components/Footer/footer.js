@@ -42,7 +42,7 @@ const Footer = props => {
                     <ul>
                         <li><i className="ti-home" /> ajsdbahsbvdhasvdags <br />chankharpul moder goli</li>
                         <li><i className="ti-headphone-alt" />+880881882882</li>
-                        <li><i className="ti-email" /><a href="#0">info@fansthetic.com0</a></li>
+                        <li><i className="ti-email" /><a style={{cursor:'pointer'}} >info@fansthetic.com0</a></li>
                     </ul>
                     </div>
                 </div>
@@ -58,8 +58,8 @@ const Footer = props => {
                     <div className="follow_us">
                         <h5>Follow Us</h5>
                         <ul>
-                        <li><a href="#0"><img src={facebook_icon} data-src={facebook_icon} alt className="lazy" /></a></li>
-                        <li><a href="#0"><img src={insta_icon} data-src={insta_icon} alt className="lazy" /></a></li>
+                        <li><a style={{cursor:'pointer'}} ><img src={facebook_icon} data-src={facebook_icon} alt className="lazy" /></a></li>
+                        <li><a style={{cursor:'pointer'}} ><img src={insta_icon} data-src={insta_icon} alt className="lazy" /></a></li>
                         </ul>
                     </div>
                     </div>
@@ -93,8 +93,8 @@ const Footer = props => {
                 </div>
                 <div className="col-lg-6">
                     {/* <ul className="additional_links">
-                    <li><a href="#0">Terms and conditions</a></li>
-                    <li><a href="#0">Privacy</a></li>
+                    <li><a style={{cursor:'pointer'}} >Terms and conditions</a></li>
+                    <li><a style={{cursor:'pointer'}} >Privacy</a></li>
                     <li><span>© 2020 Allaia</span></li>
                     </ul> */}
                 </div>

@@ -56,7 +56,7 @@
 		offCanvas: {
 		  pageSelector: "#page"
 	   },
-		navbars: [{position:'bottom',content: ['<a href="#0">© 2020 Allaia</a>']}]}, 
+		navbars: [{position:'bottom',content: ['<a style={{cursor:'pointer'}} >© 2020 Allaia</a>']}]}, 
 		{
 		// configuration
 		clone: true,
