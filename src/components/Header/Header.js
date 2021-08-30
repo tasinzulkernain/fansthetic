@@ -89,19 +89,13 @@ const Header = props => {
 								<a href="#" className="open_close" id="close_in"><i className="ti-close"></i></a>
 							</div>
 							<ul>
-								<li className="header-menu">
-									<a href="javascript:void(0);" className="show-submenu">About</a>
-									{/* <ul>
-										<li><a href="index.html">Slider</a></li>
-										<li><a href="index-2.html">Video Background</a></li>
-										<li><a href="index-3.html">Vertical Slider</a></li>
-										<li><a href="index-4.html">GDPR Cookie Bar</a></li>
-									</ul> */}
-								</li>
-								<li className="header-menu">
+								{/* <li className="header-menu">
+									<a href="javascript:void(0);" className="show-submenu">  </a>
+								</li> */}
+								{/* <li className="header-menu">
 									<Link href="/contact" > Contact us </Link>
-								</li>
-								<li className="header-menu">
+								</li> */}
+								<li style={{marginLeft: '10rem'}} className="header-menu">
 									<Link to="/products" > Products </Link>
 								</li>
 								<li className="header-menu">
@@ -161,7 +155,7 @@ const Header = props => {
 						<div className="custom-search-input">
 							<input type="text" placeholder="Search over 500 products" value={search_string} onChange={e => update_search_string(e.target.value)} onKeyUp={ handleKeyUp }/>
 							<button type="submit">
-								<Link id="search_button" href={`/products?${new URLSearchParams({search: search_string}).toString()}`} >
+								<Link id="search_button" to={`/products?${new URLSearchParams({search: search_string}).toString()}`} >
 									<i className="header-icon_search_custom"/>
 								</Link>
 							</button>
@@ -176,11 +170,11 @@ const Header = props => {
 										<ul>
 											{cart.products.map( product =>
 												<li>
-													<Link to={`/product?product_id=${product.id}`}>
+													<Link to={`/product?product_id=${product.product_id}`}>
 														<figure><img src={product.product__thumbnail} data-src={product.product__thumbnail} alt="" width="50" height="50" className="lazy"/></figure>
 														<strong><span>{product.product__title}</span>{product.protuct__price}</strong>
 													</Link>
-													<a href="#0" onClick={() => remove_from_cart(product.product_id)} className="action"><i className="ti-trash"></i></a>
+													<a style={{cursor:'pointer'}} onClick={() => remove_from_cart(product.product_id)} className="action"><i className="ti-trash"></i></a>
 												</li>
 											)}
 										</ul>

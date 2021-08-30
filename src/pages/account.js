@@ -81,10 +81,10 @@ const Account = props => {
                             <div className="form_container">
                                 {/* <div className="row no-gutters">
                                     <div className="col-lg-6 pr-lg-1">
-                                        <a href="#0" className="social_bt facebook">Login with Facebook</a>
+                                        <a style={{cursor:'pointer'}}  className="social_bt facebook">Login with Facebook</a>
                                     </div>
                                     <div className="col-lg-6 pl-lg-1">
-                                        <a href="#0" className="social_bt google">Login with Google</a>
+                                        <a style={{cursor:'pointer'}}  className="social_bt google">Login with Google</a>
                                     </div>
                                 </div> */}
                                 {/* <div className="divider"><span>Or</span></div> */}

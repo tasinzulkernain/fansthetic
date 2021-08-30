@@ -89,7 +89,7 @@ const Product = props => {
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-6">
-                                            <div className="btn_add_to_cart"><a href="#0" className="btn_1" onClick={ () => add_to_cart(product.id, quantity) } >Add to Cart</a></div>
+                                            <div className="btn_add_to_cart"><a style={{cursor:'pointer'}}  className="btn_1" onClick={ () => add_to_cart(product.id, quantity) } >Add to Cart</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@ const Product = props => {
                                 <div className="product_actions mb-5">
                                     <ul>
                                         <li>
-                                            <a href="#"><i className="ti-heart" /><span>Add to Wishlist</span></a>
+                                            <a style={{cursor:'pointer'}} ><i className="ti-heart" /><span>Add to Wishlist</span></a>
                                         </li>
                                     </ul>
                                 </div>

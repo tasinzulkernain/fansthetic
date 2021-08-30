@@ -8,7 +8,7 @@ const updateWishlistLogic = createLogic({
 
     async process({ action }, dispatch) {
         try {
-            const d = await api.put('/products/wishlist', {
+            const d = await api.put('/products/wishlist/', {
                 "wishlist": action.payload 
             })
             dispatch( update_wishlist_success(d.data.response.wishlist) );

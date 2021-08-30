@@ -35,9 +35,9 @@ const Product = props => {
                     {/* <span class="old_price">$60.00</span> */}
                 </div>
                 <ul>
-                    <li><a href="#0" onClick={() => remove_from_wishlist(product.id)} class="tooltip-1" data-toggle="tooltip" data-placement="left" title="remove from Wishlist"><i class="ti-heart"></i><span>Add to Wishlist</span></a></li>
-                    {/* <li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li> */}
-                    <li><a href="#0" onClick={() => add_to_cart(product.id)} class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+                    <li><a style={{cursor:'pointer'}}  onClick={() => remove_from_wishlist(product.id)} class="tooltip-1" data-toggle="tooltip" data-placement="left" title="remove from Wishlist"><i class="ti-heart"></i><span>Add to Wishlist</span></a></li>
+                    {/* <li><a style={{cursor:'pointer'}}  class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li> */}
+                    <li><a style={{cursor:'pointer'}}  onClick={() => add_to_cart(product.id)} class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
                 </ul>
             </div>
         </div>
