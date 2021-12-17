@@ -22,9 +22,9 @@ const Footer = props => {
                     <h3 data-target="#collapse_1">Quick Links</h3>
                     <div className="collapse dont-collapse-sm links" id="collapse_1">
                     <ul>
-                        <li><a href="about.html">About us</a></li>
+                        {/* <li><a href="about.html">About us</a></li> */}
                         <li><Link to="/profile">My account</Link></li>
-                        <li><a href="contacts.html">Contacts</a></li>
+                        {/* <li><a href="contacts.html">Contacts</a></li> */}
                     </ul>
                     </div>
                 </div>
@@ -40,15 +40,16 @@ const Footer = props => {
                     <h3 data-target="#collapse_3">Contacts</h3>
                     <div className="collapse dont-collapse-sm contacts" id="collapse_3">
                     <ul>
-                        <li><i className="ti-home" /> ajsdbahsbvdhasvdags <br />chankharpul moder goli</li>
-                        <li><i className="ti-headphone-alt" />+880881882882</li>
-                        <li><i className="ti-email" /><a style={{cursor:'pointer'}} >info@fansthetic.com0</a></li>
+                        <li><a href="https://goo.gl/maps/9QLqg4cGTBteTt4R6"><i className="ti-home" /> Holy Criscent School, Block B, <br />Road 4, Rampura Banasree</a></li>
+                        <li><i className="ti-headphone-alt" />01714456327 </li>
+                        <li><i className="ti-email" /><a style={{cursor:'pointer'}} >fansthetic@gmail.com</a></li>
                     </ul>
                     </div>
                 </div>
                 <div className="col-lg-3 col-md-6">
-                    <h3 data-target="#collapse_4">Keep in touch</h3>
+                    <h3 data-target="#collapse_4">About Us</h3>
                     <div className="collapse dont-collapse-sm" id="collapse_4">
+                    Fansthetic is a leading fandom brand of fandom merchandise, with the goal of reshaping the fandom world of Bangladesh. We have merch from Anime, TV shows, Movies, Harry Potter, Games, Cartoon, Van Gogh, Music, any fandom you might think of!
                     {/* <div id="newsletter">
                         <div className="form-group">
                         <input type="email" name="email_newsletter" id="email_newsletter" className="form-control" placeholder="Your email" />

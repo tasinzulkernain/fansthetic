@@ -5,6 +5,7 @@ import api from '../../../../api'
 import _ from 'lodash'
 import forge from 'node-forge';
 import Cookies from 'js-cookie';
+import { show_alert } from '../../commands/commands_slice';
 
 
 const signupLogic = createLogic({
@@ -24,8 +25,9 @@ const signupLogic = createLogic({
             // api.defaults.headers.common['Authorization'] = "Basic " + forge.util.encode64(action.payload.username + ":" + action.payload.password);
             // Cookies.set('Authorization', "Basic " + forge.util.encode64(action.payload.username + ":" + action.payload.password));
 
-
             dispatch( signup_success( ) );
+
+            dispatch( show_alert( {text: `Account Registration Completed`} ) );
 
             dispatch( login( {username, password: password1} ) )
         }catch (e) {

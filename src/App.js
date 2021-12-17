@@ -143,9 +143,9 @@ const App = props => {
                     <Route path="/product/">
                         <Product />
                     </Route>
-                    <PrivateRoute path="/cart">
+                    <Route path="/cart">
                         <Cart />
-                    </PrivateRoute>
+                    </Route>
                     <PrivateRoute path="/checkout">
                         <Checkout />
                     </PrivateRoute>
