@@ -51,12 +51,13 @@ const auth_slice = createSlice({
             state.error = action.payload.error;
         },
         signup: (state,action) => {
+            state.last_page = window.location.hash;
             state.status = "PROCESSING"
-            // state.statusText = "Hold on, signing you up"
+            state.statusText = "Hold on, signing you up"
         },
         signup_success: (state, action) => {
             state.status = "SIGNUP SUCCESS"
-            state.statusText = "Successfully registered your account. welcome aboard"
+            state.statusText = "Successfully registered your account. Please login with you account credentials"
             // state.credentials = {
             //     username: action.payload.username,
             //     password: action.payload.password,

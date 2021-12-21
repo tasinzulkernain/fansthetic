@@ -8,9 +8,49 @@ const placeOrderLogic = createLogic({
     type: place_order,
     latest: true,
 
-    async process({ action }, dispatch, done) {
+    async process({ action: {payload} }, dispatch, done) {
         try {
-            const d = await api.post(`/orders/create/`, action.payload);  
+            // const payload = action.payload;
+            const req = {
+                "shipping_address": {
+                //   "created_at": "",
+                //   "updated_at": "",
+                //   "is_deleted": true,
+                //   "deleted_at": "",
+                  "name": payload.name,
+                  "mobile_no": "string",
+                  "street": "string",
+                  "city": "",
+                  "zipcode": "",
+                  "division": "",
+                  ...payload
+                },
+                "billing_address": {
+                  "created_at": "2021-12-17T15:16:30.650Z",
+                  "updated_at": "2021-12-17T15:16:30.650Z",
+                  "is_deleted": true,
+                  "deleted_at": "2021-12-17T15:16:30.650Z",
+                  "name": "string",
+                  "mobile_no": "string",
+                  "street": "string",
+                  "city": "string",
+                  "zipcode": "string",
+                  "division": "string"
+                },
+                "name": payload.name,
+                // "created_at": "2021-12-17T15:16:30.650Z",
+                // "track_id": "string",
+                "contact_no": payload.contact_no,
+                "delivery_charge": payload.delivery_charge,
+                "special_note": "string",
+                // "status": "processing",
+                "discount": 0,
+                "special_discount": 0,
+                "paid_amount": 0,
+                "remaining_amount": 0,
+                "delivery_zone": payload.delivery_zone
+            }
+            const d = await api.post(`/orders/create/`, req);  
             dispatch( place_order_success( ) );
             dispatch( initialize_cart() );
             // dispatch( update_cart_success( [] ) )

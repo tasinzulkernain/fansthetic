@@ -30,7 +30,7 @@ const loginLogic = createLogic({
                 username: d.data.response.username,
                 password: action.payload.password,
             } ) );
-            // dispatch( show_alert( {text: "Logged you in :D", timeout: 2000} ) )
+            dispatch( show_alert( {text: "Logged you in :D" } ) )
         }catch (e) {
             dispatch( login_failure({error: e.response}) )
         }

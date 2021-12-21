@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { clear_order_status, load_scripts, place_order } from '../state/slices/pages/checkout/checkout_slice'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, useField, useFormikContext } from 'formik';
 import "../styles/checkout.scss"
 import * as yup from 'yup';
 import { useHistory } from 'react-router-dom';
 import { show_alert } from '../state/slices/commands/commands_slice';
+import { initialize_cart } from '../state/slices/cart/cart_slice';
 
 const mapStateToProps = state => {
     return {
@@ -20,9 +21,43 @@ const mapDispatchToProps = dispatch => {
         load_scripts: () => dispatch(load_scripts("checkout", "default")),
         place_order: values => dispatch( place_order(values) ),
         show_alert: text => dispatch( show_alert( {text} ) ),
-        clear_order_status: () => dispatch( clear_order_status() )
+        clear_order_status: () => dispatch( clear_order_status() ),
+        initialize_cart: () => dispatch( initialize_cart() )
     }
 }
+
+
+const CustomField = (props) => {
+    const {
+      values: { delivery_zone, cart_total, delivery_charge },
+      touched,
+      setFieldValue,
+    } = useFormikContext();
+    const [field, meta] = useField(props);
+  
+    console.log(props.values);
+
+    React.useEffect(() => {
+        if( props.name === "delivery_charge" ) {
+            setFieldValue(props.name, delivery_zone === "Inside Dhaka" ? 60 : 150 );
+        }
+        if( props.name === "total" ) {
+            console.log( cart_total, delivery_charge );
+            setFieldValue(props.name, parseInt(cart_total) + parseInt(delivery_charge) );
+        }
+        if( props.name === "cart_total" ) {
+            setFieldValue(props.name, parseInt(props.cart.total_amount))
+        }
+    }, [delivery_zone, cart_total, delivery_charge, props.cart]);
+
+
+    return (
+      <>
+        <span {...props} {...field} >{field.value}</span>
+        {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
+      </>
+    );
+  };
 
 const Checkout = props => {
     const { loaded_scripts, load_scripts, cart, place_order, status, show_alert, clear_order_status } = props;
@@ -35,6 +70,7 @@ const Checkout = props => {
     useEffect( () => {
         if(status == "SUCCESS") {
             history.push('/order/confirm')
+            props.initialize_cart();
         }else if(status == "FAILURE") {
             show_alert( "Couldn't place order :(" )
             clear_order_status();
@@ -65,63 +101,44 @@ const Checkout = props => {
         })
     });
 
+    const x = useFormikContext();
+
+    console.log(x);
+    
     return (
         <main className="bg_gray">
             <div className="container margin_30">
-                {/* <div className="page_header">
-                    <div className="breadcrumbs">
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Category</a></li>
-                            <li>Page active</li>
-                        </ul>
-                    </div>
-                    <h1>Sign In or Create an Account</h1>
-                </div> */}
-                {/* /page_header */}
+                
                 <Formik
                     initialValues={{
                         "shipping_address": {
-                          "name": "",
-                          "mobile_no": "",
-                          "street": "",
-                          "city": "",
-                          "zipcode": "",
-                          "division": ""
+                          "street": "3/7 johnson road",
                         },
-                        "billing_address": {
-                          "name": "",
-                          "mobile_no": "",
-                          "street": "",
-                          "city": "",
-                          "zipcode": "",
-                          "division": ""
-                        },
-                        "name": "",
-                        "contact_no": "",
+                        "name": "Al-Mubin Nabil",
+                        "contact_no": "01848333385",
                         "payment_method": "cash_on_delivery",
-
-                        // "delivery_charge": 0,
-                        // "special_note": "string",
-                        // "discount": 0,
-                        // "special_discount": 0,
-                        // "paid_amount": 0,
-                        // "remaining_amount": 0,
+                        "delivery_zone": "Inside Dhaka",
+                        "delivery_charge": 60,
+                        "cart_total": cart.total_amount,
+                        "total": cart.total_amount + 100,
                     }}
-                    // validate={ (values,errors) => {
-                    //     if(!values.city) {
-                    //         errors.city = "Required"
-                    //     }
-                    //     return errors;
-                    // }}
-                    validationSchema={schema}
+                    // validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
-                        // setTimeout(() => {
-                        //     alert(JSON.stringify(values, null, 2));
-                        //     setSubmitting(false);
-                        // }, 400);
                         console.log("came");
+                        values = {
+                            ...values,
+                            // order_items: cart.products.map( p => ({
+                            //     product_id: p.product_id,
+                            //     title: p.product__title,
+                            //     quantity: p.quantity,
+                            //     price: p.product__price,
+                            // }) )
+                        }
+                        delete values.cart_total;
+                        delete values.total;
+                        delete values.payment_method;
                         console.log(values);
+
                         place_order(values);
                         setSubmitting(false);
                     }}
@@ -137,18 +154,9 @@ const Checkout = props => {
                     }) => (
                 <Form>
                 <div className="row">
-                    {/* {JSON.stringify(errors)} */}
                     <div className="col-lg-4 col-md-6">
                         <div className="step first">
                             <h3>1. User Info and Billing address</h3>
-                            <ul className="nav nav-tabs" id="tab_checkout" role="tablist">
-                                <li className="nav-item">
-                                    <a className="nav-link active" id="home-tab" data-toggle="tab" href="#tab_1" role="tab" aria-controls="tab_1" aria-selected="true">Register</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" id="profile-tab" data-toggle="tab" href="#tab_2" role="tab" aria-controls="tab_2" aria-selected="false">Login</a>
-                                </li>
-                            </ul>
                             <div className="tab-content checkout">
                                 <div className="tab-pane fade show active" id="tab_1" role="tabpanel" aria-labelledby="tab_1">
                                     <div className="form-group">
@@ -158,94 +166,18 @@ const Checkout = props => {
                                         <Field type="text" className="form-control" placeholder="Contact number" name="contact_no"/>
                                     </div>
                                     <hr />
-                                    <label for="shipping_address" class="form-label mb-2 ml-1">Shipping address</label>
+                                    
                                     <div className="form-group">
-                                        <Field type="text" className="form-control" placeholder="Name" name="shipping_address.name" />
+                                        <Field type="text" className="form-control" placeholder="Shipping Address" name="shipping_address.street"/>
                                     </div>
+                                    
                                     <div className="form-group">
-                                        <Field type="text" className="form-control" placeholder="Mobile number" name="shipping_address.mobile_no" />
-                                        <ErrorMessage name="shipping_address.mobile_no" />
+                                        <Field as="select" className="form-control" placeholder="Delivery Zone" name="delivery_zone">
+                                            <option value="Inside Dhaka">Inside Dhaka</option>
+                                            <option value="Outside Dhaka">Outside Dhaka</option>
+                                        </Field>
                                     </div>
-                                    <div className="form-group">
-                                        <Field type="text" className="form-control" placeholder="Address"  name="shipping_address.street"/>
-                                        <ErrorMessage name="shipping_address.street" />
-                                    </div>
-                                    <div className="row no-gutters">
-                                        <div className="col-6 form-group pr-1">
-                                            <Field type="text" className="form-control" placeholder="City"  name="shipping_address.city"/>
-                                            <ErrorMessage name="shipping_address.city" />
-                                        </div>
-                                        <div className="col-6 form-group pl-1">
-                                            <Field type="text" className="form-control" placeholder="Division"  name="shipping_address.division"/>
-                                            <ErrorMessage name="shipping_address.division" />
-                                        </div>
-                                    </div>
-                                    {/* /row */}
-                                    <hr />
-                                    {/* <div className="form-group">
-                                        <label className="container_check" id="other_addr">Billing address same as shipping address
-                                            <input type="checkbox" defaultChecked="true" name="billing_same"/>
-                                            <span className="checkmark" />
-                                        </label>
-                                    </div>
-                                    <div id="other_addr_c" className="pt-2">
-                                        <div className="form-group">
-                                            <Field type="text" className="form-control" placeholder="Name" name="billing_address.name"/>
-                                        </div>
-                                        <div className="form-group">
-                                            <Field type="text" className="form-control" placeholder="Mobile number" name="billing_address.mobile_no" />
-                                            <ErrorMessage name="billin_address.mobile_no." />
-                                        </div>
-                                        <div className="form-group">
-                                            <Field type="text" className="form-control" placeholder="Address" name="billing_address.street" />
-                                            <ErrorMessage name="billin_address.street" />
-                                        </div>
-                                        <div className="row no-gutters">
-                                            <div className="col-6 form-group pr-1">
-                                                <Field type="text" className="form-control" placeholder="City"  name="billing_address.city"/>
-                                                <ErrorMessage name="billin_address.city" />
-                                            </div>
-                                            <div className="col-6 form-group pl-1">
-                                                <Field type="text" className="form-control" placeholder="Division"  name="billing_address.zipcode"/>
-                                                <ErrorMessage name="shipping_address.division" />
-                                            </div>
-                                        </div>
-                                        <div className="form-group">
-                                            <Field type="text" className="form-control" placeholder="Division" name="billing_address.division" />
-                                        </div>
-                                    </div>
-                                    <hr /> */}
                                 </div>
-                                {/* /tab_1 */}
-                                {/* <div className="tab-pane fade" id="tab_2" role="tabpanel" aria-labelledby="tab_2">
-                                    <a style={{cursor:'pointer'}}  className="social_bt facebook">Login con Facebook</a>
-                                    <a style={{cursor:'pointer'}}  className="social_bt google">Login con Google</a>
-                                    <div className="form-group">
-                                        <Field type="email" className="form-control" placeholder="Email" />
-                                    </div>
-                                    <div className="form-group">
-                                        <Field type="password" className="form-control" placeholder="Password" name="password_in" id="password_in" />
-                                    </div>
-                                    <div className="clearfix add_bottom_15">
-                                        <div className="checkboxes float-left">
-                                            <label className="container_check">Remember me
-                                            <Field type="checkbox" />
-                                                <span className="checkmark" />
-                                            </label>
-                                        </div>
-                                        <div className="float-right"><a id="forgot" style={{cursor:'pointer'}} >Lost Password?</a></div>
-                                    </div>
-                                    <div id="forgot_pw">
-                                        <div className="form-group">
-                                            <Field type="email" className="form-control" name="email_forgot" id="email_forgot" placeholder="Type your email" />
-                                        </div>
-                                        <p>A new password will be sent shortly.</p>
-                                        <div className="text-center"><Field type="submit" defaultValue="Reset Password" className="btn_1" /></div>
-                                    </div>
-                                    <hr />
-                                    <Field type="submit" className="btn_1 full-width" defaultValue="Login" />
-                                </div> */}
-                                {/* /tab_2 */}
                             </div>
                         </div>
                         {/* /step */}
@@ -274,27 +206,21 @@ const Checkout = props => {
                                     ) )}
                                 </ul>
                                 <ul>
-                                    <li className="clearfix"><em><strong>Subtotal</strong></em>  <span>&#2547;{cart.total_amount}</span></li>
-                                    <li className="clearfix"><em><strong>Shipping</strong></em> <span>&#2547;0</span></li>
+                                    <li className="clearfix">
+                                        <em><strong>Subtotal</strong></em>  
+                                        <CustomField name="cart_total" cart={cart} /> 
+                                    </li>
+                                    <li className="clearfix">
+                                        <em><strong>Shipping</strong></em> 
+                                        <CustomField name="delivery_charge" cart={cart} />
+                                    </li>
                                 </ul>
-                                <ul className="input-group">
-                                    <Field className="form-control mr-4 rounded flex-grow" type="text" name="prmo_code" />  
-                                    <span><button type="button" className="form-control btn_1 px-3 " >Apply promo </button></span>
-                                </ul>
-                                <div className="total clearfix">TOTAL <span>&#2547;{cart.total_amount}</span></div>
-                                {/* <div className="form-group">
-                                    <label className="container_check">Register to the Newsletter.
-                                        <input type="checkbox" defaultChecked />
-                                        <span className="checkmark" />
-                                    </label>
-                                </div> */}
+                                <div className="total clearfix">TOTAL <CustomField cart={cart} name="total" /> </div>
                                 <button type="submit" className="btn_1 full-width">
                                     Place an order
                                 </button>
                             </div>
-                            {/* /box_general */}
                         </div>
-                        {/* /step */}
                     </div>
                 </div>
                 </Form>
