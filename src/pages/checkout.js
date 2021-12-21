@@ -6,6 +6,7 @@ import "../styles/checkout.scss"
 import * as yup from 'yup';
 import { useHistory } from 'react-router-dom';
 import { show_alert } from '../state/slices/commands/commands_slice';
+import { initialize_cart } from '../state/slices/cart/cart_slice';
 
 const mapStateToProps = state => {
     return {
@@ -20,7 +21,8 @@ const mapDispatchToProps = dispatch => {
         load_scripts: () => dispatch(load_scripts("checkout", "default")),
         place_order: values => dispatch( place_order(values) ),
         show_alert: text => dispatch( show_alert( {text} ) ),
-        clear_order_status: () => dispatch( clear_order_status() )
+        clear_order_status: () => dispatch( clear_order_status() ),
+        initialize_cart: () => dispatch( initialize_cart() )
     }
 }
 
@@ -37,7 +39,7 @@ const CustomField = (props) => {
 
     React.useEffect(() => {
         if( props.name === "delivery_charge" ) {
-            setFieldValue(props.name, delivery_zone === "Inside Dhaka" ? 100 : 200 );
+            setFieldValue(props.name, delivery_zone === "Inside Dhaka" ? 60 : 150 );
         }
         if( props.name === "total" ) {
             console.log( cart_total, delivery_charge );
@@ -68,6 +70,7 @@ const Checkout = props => {
     useEffect( () => {
         if(status == "SUCCESS") {
             history.push('/order/confirm')
+            props.initialize_cart();
         }else if(status == "FAILURE") {
             show_alert( "Couldn't place order :(" )
             clear_order_status();
@@ -115,7 +118,7 @@ const Checkout = props => {
                         "contact_no": "01848333385",
                         "payment_method": "cash_on_delivery",
                         "delivery_zone": "Inside Dhaka",
-                        "delivery_charge": 100,
+                        "delivery_charge": 60,
                         "cart_total": cart.total_amount,
                         "total": cart.total_amount + 100,
                     }}

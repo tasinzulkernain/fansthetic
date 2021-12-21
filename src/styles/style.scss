@@ -32,27 +32,58 @@ Author URI: http://themeforest.net/user/Ansonika/
 
 /* CUSTOM VOODO */
 
+
+@media (min-width: 300px) {
+  #carousel-home .owl-carousel  {
+    padding: 0rem 0rem;
+    margin-top: .5rem 
+  }
+  #banners-grid {
+    padding: 0rem 6rem;
+  }
+}
+
+@media (min-width: 766px) {
+  #carousel-home .owl-carousel  {
+    padding: 0rem 6rem;
+    margin-top: 1rem 
+  }
+  .owl-dots {
+    margin: 0 -6rem;
+  }
+  ul#banners_grid {
+    padding-left: 6rem !important;
+    padding-right: 6rem !important;
+  }
+}
+
+
 .alert-container {
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 2px .7em #555;
   left: 50vw;
-  padding: 1em 2em;
+  // padding: 0rem;
   transform: translateX(-50%);
   position: fixed;
   color: black;
   top: -50px;
+  background-color: #28a745;
+  color: #fefefe;
   // bottom: 500px;
   z-index: 999999990;
-  transition: .2s ease-out;
+  transition: .3s ease-out;
   opacity: 0;
+  padding: 1rem 4rem;
+  font-size: 1.2rem;
   span {
     margin-bottom: 0;
   }
 }
 
 .alert-active {
-  top: 30px;
+  // height: 5rem;
+  top: 50px;
   opacity: 1;
 }
 

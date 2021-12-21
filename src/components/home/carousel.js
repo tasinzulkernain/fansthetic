@@ -7,9 +7,10 @@ const Carousel = props => {
     console.log(banners);
     return (
         <div id="carousel-home">
-            <div className="owl-carousel owl-theme">
+            <div className="owl-carousel owl-theme" >
                 {banners.map(banner => 
                     <div className="owl-slide cover" style={{backgroundImage: `url(${banner.thumbnail})`}} alt={banner.alt}>
+                    { /*did some style changes for owl-dots in css*/}
                     <div className="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.5)">
                         {/* <div className="container">
                         <div className="row justify-content-center justify-content-md-end">

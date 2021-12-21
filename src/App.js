@@ -6,7 +6,7 @@ import { connect, Provider } from 'react-redux'
 import Cookies from 'js-cookie';
 import forge from 'node-forge'
 import api from './api'
-// import MessengerCustomerChat from 'react-messenger-customer-chat';
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import { script_loaded } from './state/slices/scripts/scripts_slice';
 import { fatal_error } from './state/slices/errors/errors';
@@ -103,12 +103,14 @@ const App = props => {
         //     return;
         // } 
         const container = document.querySelector('.alert-container');
+        show_alert_done();
         container.classList.add('alert-active');
         container.querySelector('span').textContent = commands.alert_item.text;
         setTimeout( () => {
             document.querySelector('.alert-container').classList.remove('alert-active');
             show_alert_done();
-        }, commands.alert_item.timeout );
+            //parseInt(commands.alert_item.timeout)
+        }, 2500 );
     }, [commands.alert_item] )
 
     useEffect( () => {
@@ -124,10 +126,20 @@ const App = props => {
     return (
         <div className="App">
             <div className="alert-primary alert-container alert-active" >
-                <span className="" >Product addedd to cart</span>
+                <span className="" ></span>
             </div>
+        
+            <MessengerCustomerChat
+                pageId="1493331417562328"
+                appId="1086071225460584"
+                debug={true}
+                shouldShowDialog={true}
+                greetingDialogDisplay={'show'}
+            />
+
+
             <authContext.Provider value={{logged_in: Cookies.get('Authorization') !== undefined}}>
-            
+        
             <Router history={history} >
                 <Header />
                 <Switch>

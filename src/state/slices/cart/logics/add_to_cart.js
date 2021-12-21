@@ -34,6 +34,7 @@ const addToCartLogic = createLogic({
                         return { product_id: action.payload.product_id, quantity: parseInt( product.quantity ) + quantity }
                     }else return { product_id: product.product_id, quantity: product.quantity };
                 } )
+                console.log(new_products);
                 if(!found) new_products.push(action.payload);
             }
             

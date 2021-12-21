@@ -34,13 +34,44 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
+const Order = props => {
+    const { order } = props;
+    return (
+        <div class="col-6 col-md-4">
+            <div class="grid_item">
+                <figure>
+                    <Link to={`orders?order_id=${order.track_id}`}>
+                        <div className="d-flex flex-column justify-content-center">
+                            <img class="img-fluid lazy center-block" src={trucklogo} data-src={trucklogo} alt="order thumbnail"/>
+                        </div>
+                    </Link>
+                    {/* <div data-countdown="2019/05/15" class="countdown"></div> */}
+                </figure>
+                <a href="product-detail-1.html">
+                    <h3>id - {order.track_id}</h3>
+                </a>
+                <div class="price_box">
+                    <span class="new_price">{order.grand_total} {'\u09F3'}</span>
+                    {/* <span class="old_price">$60.00</span> */}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
 const Orders = props => {
 
     const { order, status, orders, fetch_order, fetch_orders, statusText } = props;
 
-    const location = useLocation()
+    const location = useLocation();
     const history = useHistory();
     const qparams = qs.parse(location.search)
+    // const [ order, update_order ] = useState(order_from_prop);
+
+    // useEffect( () => {
+    //     update_order(order_from_prop);
+    // }, [order_from_prop.track_id] )
 
     useEffect( () => {
         fetch_orders();
@@ -58,8 +89,10 @@ const Orders = props => {
 
     const handle_fetch_order_by_id = () => {
         history.push("/orders?order_id="+document.querySelector('#invoice_id').value);
-        fetch_order(parseInt( document.querySelector('#invoice_id').value));
+        fetch_order(document.querySelector('#invoice_id').value);
     }
+
+    console.log(order)
 
     return (
         <main>
@@ -75,7 +108,7 @@ const Orders = props => {
                                         <p>Quick Tracking Order</p>
                                         <div className="search_bar">
                                             <input id="invoice_id" type="text" className="form-control" placeholder="Invoice ID" />
-                                            <input onClick={handle_fetch_order_by_id} type="submit" defaultValue="Search" />
+                                            <input onClick={handle_fetch_order_by_id} type="submit" value="Search Order" />
                                         </div>
                                         { statusText !== "" ?
                                             <h5 className="">{ statusText }</h5>
@@ -92,7 +125,7 @@ const Orders = props => {
                         
                         
                         { order && order.name ? 
-                            <div className="bg_white">
+                            <div key={order.track_id} className="bg_white">
                                 <div class="tabs_product bg_white version_2">
                                     <div class="container">
                                         <ul class="nav nav-tabs" role="tablist">
@@ -167,11 +200,11 @@ const Orders = props => {
                                                     <div className="row pt-3 mt-3">
                                                         <div className="col-lg-7 col-md-6">
                                                             <div className="price_main">
-                                                                <span className="new_price">${order.grand_total}</span>
+                                                                <span className="new_price">{order.grand_total} {'\u09F3'}</span>
                                                                 {order.special_discount || order.discount ?
                                                                 <>
                                                                     <span className="percentage">-{100 - (order.grand_total+order.special_discount+order.discount)/order.grand_total * 100}</span> 
-                                                                    <span className="old_price">${order.grand_total+order.special_discount+order.discount}</span>
+                                                                    <span className="old_price">{'U+09F3'}{order.grand_total+order.special_discount+order.discount}</span>
                                                                 </>
                                                                 :   <></>}
                                                                 </div>
@@ -287,7 +320,7 @@ const Orders = props => {
                                 {/* <div className="products_carousel"> */}
                                     <div className="row small-gutters">
                                         {orders.map( order =>
-                                            <Product fromOrders product={{id: order.track_id, thumbnail: trucklogo, title: order.name, price: order.grand_total}} fromHome/>
+                                            <Order order={order} />
                                         )}
                                     </div>
                                     {/* {orders.map( order => (
