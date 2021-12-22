@@ -43,7 +43,7 @@ const CartItem = props => {
                 <strong>&#2547;{product.product__price * product.quantity}</strong>
             </td>
             <td className="options">
-                <a href="#" onClick={ () => remove_from_cart(product.product_id) }><i className="ti-trash" /></a>
+                <button onClick={ () => remove_from_cart(product.product_id) }><i className="ti-trash" /></button>
             </td>
         </tr>
     )

@@ -102,6 +102,7 @@ const App = props => {
         // if(commands.alert_item.text === "initial"){
         //     return;
         // } 
+        if( !commands.alert_item.text ) return;
         const container = document.querySelector('.alert-container');
         show_alert_done();
         container.classList.add('alert-active');
@@ -115,7 +116,9 @@ const App = props => {
 
     useEffect( () => {
         const auth_header = Cookies.get("Authorization");
+        console.log(auth_header)
         if( auth_header ) {
+            console.log("Auth header found?", auth_header)
             const auth = forge.util.decode64(auth_header.split(' ')[1]).split(':');
             console.log("auth - ", auth);
             login( auth[0], auth[1] )
@@ -125,7 +128,7 @@ const App = props => {
 
     return (
         <div className="App">
-            <div className="alert-primary alert-container alert-active" >
+            <div className="alert-primary alert-container" >
                 <span className="" ></span>
             </div>
         
@@ -135,6 +138,9 @@ const App = props => {
                 debug={true}
                 shouldShowDialog={true}
                 greetingDialogDisplay={'show'}
+                xfbml={true}
+                version={"2.12"}
+                autoLogAppEvents={true}
             />
 
 

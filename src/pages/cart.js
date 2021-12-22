@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import CartItem from '../components/cart/cart_item'
 import { load_scripts } from '../state/slices/scripts/scripts_slice';
 import { Link } from 'react-router-dom'
+import { remove_from_cart, update_cart } from '../state/slices/cart/cart_slice';
 
 import "../styles/cart.scss"
 
@@ -14,12 +15,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        "load_scripts": () => dispatch( load_scripts("cart", "default") )
+        "load_scripts": () => dispatch( load_scripts("cart", "default") ),
+        "clear_cart": () => dispatch( update_cart([]) )
     }
 }
 
 const Cart = props => {
-    const { cart, load_scripts } = props;
+    const { cart, load_scripts, clear_cart } = props;
     const { products, total_amount, status } = cart;
 
     // useEffect( () => {
@@ -101,6 +103,11 @@ const Cart = props => {
                                     <span>Total</span> &#2547;{total_amount}
                                 </li>
                             </ul>
+                            <button className='btn_1 full-width cart' style={{backgroundColor: '#ba000d'}}
+                                onClick={() => {
+                                    products.forEach( product => clear_cart(product.product_id) )
+                                }}
+                            >Clear Cart</button>
                             <Link to="/checkout" className="btn_1 full-width cart">Proceed to Checkout</Link>
                         </div>
                     </div>
