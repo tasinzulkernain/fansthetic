@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     re_initialize: false,
-    alert_item: {text: "Logged you in :D", timeout: "100000000000"},
+    alert_item: {},
 }
 
 const commands_slice = createSlice({
