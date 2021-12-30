@@ -9,7 +9,7 @@ const initializeCartLogic = createLogic({
     async process({ getState, action }, dispatch) {
         try {
             console.log("iniitttt");
-            const prev_products = getState().cart.products;
+            const prev_products = JSON.parse(localStorage.getItem("cart")).cart.products;
             const d = await api.get('/products/cart');
             let cart = d.data.response.cart;
             console.log( prev_products);

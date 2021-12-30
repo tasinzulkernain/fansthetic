@@ -32,7 +32,7 @@ const Footer = props => {
                     <h3 data-target="#collapse_2">Categories</h3>
                     <div className="collapse dont-collapse-sm links" id="collapse_2">
                     <ul>
-                        {categories.map( cat => <li><a href={`/products?category=${cat.title}`}>{cat.title}</a></li> )}
+                        {categories.map( cat => <li><Link to={`/products?category=${cat.title}`}>{cat.title}</Link></li> )}
                     </ul>
                     </div>
                 </div>

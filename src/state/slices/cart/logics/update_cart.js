@@ -16,22 +16,31 @@ const updateCartLogic = createLogic({
                 })
                 cart = d.data.response.cart;
             }else {
-                const products = action.payload.map( product => {
-                    const p = getState().pages.products.products.find( p => product.product_id === p.id)
-                    return {
-                        product_id: p.id,
-                        product__title: p.title,
-                        product__thumbnail: p.thumbnail,
-                        product__price: p.price,
-                        quantity: product.quantity
+                console.log(cart);
+                console.log(action.payload);
+                const products = cart.products;
+                await Promise.all(action.payload.map(async product => {
+                    if( !products.find( p => p.product_id == product.product_id ) ) {
+                        const d = await api.get('/products/' + product.product_id + '/');
+                        const p = d.data.response.product;
+                        products.push({
+                            product_id: p.id,
+                            product__title: p.title,
+                            product__thumbnail: p.thumbnail,
+                            product__price: p.price,
+                            quantity: product.quantity
+                        });
+                    }else {
+                        products.find( p => p.product_id == product.product_id ).quantity += product.quantity;
                     }
-                } );
-                console.log(products);
+                } ));
+
                 cart = {
                     total_amount: products.reduce(  (acc, item) => acc + item.product__price * item.quantity, 0),
                     count: products.length,
                     products: products
                 };
+                localStorage.setItem("cart", JSON.stringify(cart));
             }
 
             console.log("update cart ", cart);
