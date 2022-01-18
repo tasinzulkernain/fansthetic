@@ -127,6 +127,8 @@ const Checkout = props => {
                         console.log("came");
                         values = {
                             ...values,
+                            delivery_charge: parseFloat(values.delivery_charge),
+                            delivery_zone: `${values.delivery_zone},${values.delivery_charge}`
                             // order_items: cart.products.map( p => ({
                             //     product_id: p.product_id,
                             //     title: p.product__title,

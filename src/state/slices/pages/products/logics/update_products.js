@@ -2,6 +2,7 @@ import { createLogic } from 'redux-logic';
 import { update_products, update_products_success, update_products_failure } from '../products_slice';
 import _ from 'lodash'
 import api from '../../../../../api'
+import { getDiscountedPrice } from '../../../../../util';
 
 const updateProductsLogic = createLogic({
     type: update_products,
@@ -26,12 +27,20 @@ const updateProductsLogic = createLogic({
             params.limit = products_per_page;
             params.offset = products_per_page*page;
         }
+        
 
         try {
             const d = await api.get('/products', { params });
             console.log(params);
             console.log(d);
-            dispatch( update_products_success( {products: d.data.response.results, next: d.data.response.next, page: page ? page : getState().pages.products.page }) );
+            const products = d.data.response.results.map( product => {
+                if( parseInt(product.global_discount) > 0 ) {
+                    product.old_price = product.price;
+                    product.price = getDiscountedPrice(product);
+                }
+                return product;
+            } );
+            dispatch( update_products_success( { products, next: d.data.response.next, page: page ? page : getState().pages.products.page }) );
         }catch (e) { 
             dispatch( update_products_failure({error: e.response}) )
         }

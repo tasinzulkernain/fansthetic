@@ -11,3 +11,9 @@ const Loading = () => {
         </div>
     )
 }
+
+export const getDiscountedPrice = (product) => {
+    if( parseInt(product.global_discount) > 0 ) {
+        return Math.round(parseInt(product.price) - (parseInt(product.price) * (parseInt(product.global_discount)/100)));
+    }else return parseInt(product.price);
+}
