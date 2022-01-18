@@ -84,8 +84,11 @@ const Product = props => {
                                         <div className="col-lg-5 col-md-6">
                                             <div className="price_main">
                                                 <span className="new_price">{product.price} {'\u09F3'}</span>
-                                                {/* <span className="percentage">-20%</span> 
-                                                <span className="old_price">$160.00</span> */}
+                                                    { parseInt(product.global_discount) > 0 &&
+                                                    <> 
+                                                    <span className="percentage">-{product.global_discount}%</span> 
+                                                    <span className="old_price">{product.old_price} {'\u09F3'}</span>
+                                                    </>}
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-6">

@@ -37,8 +37,8 @@ const Product = props => {
                     <h3>{product.title}</h3>
                 </Link>
                 <div class="price_box">
-                    <span class="new_price">{product.price} {'\u09F3'}</span>
-                    {/* <span class="old_price">$60.00</span> */}
+                    <span class="new_price">{product.price}{'\u09F3'}  </span>
+                    {parseInt(product.global_discount) > 0 && <span class="old_price">{product.old_price} {'\u09F3'}</span> }
                 </div>
                 <ul>
                     <li><a style={{cursor:'pointer'}}  onClick={ e => {e.preventDefault(); add_to_wishlist(product.id) } } class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to Wishlist"><i class="ti-heart"></i><span>Add to Wishlist</span></a></li>
